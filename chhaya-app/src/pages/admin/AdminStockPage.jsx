@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { useApp } from '../../context/AppContext';
+import { MediaDB } from '../../services/mediaDb';
 import { 
   Plus, 
   Search, 
@@ -12,7 +13,9 @@ import {
   CheckCircle2, 
   ExternalLink,
   ShieldCheck,
-  Tag
+  Tag,
+  Upload,
+  Image as ImageIcon
 } from 'lucide-react';
 
 export default function AdminStockPage() {
@@ -21,6 +24,8 @@ export default function AdminStockPage() {
   const [search, setSearch] = useState('');
   const [selectedCat, setSelectedCat] = useState('All');
   const [editingProduct, setEditingProduct] = useState(null); // null = closed, {} = new, { ...prod } = edit
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const productImageFileRef = useRef(null);
 
   const categories = ['All', 'Pre-Owned Phones', 'Batteries & Power', 'Screen Protection', 'Cases & Covers', 'Audio & Cables'];
 
@@ -53,6 +58,29 @@ export default function AdminStockPage() {
   const handleDelete = (id, name) => {
     if (window.confirm(`Are you sure you want to remove "${name}" from inventory?`)) {
       deleteProduct(id);
+    }
+  };
+
+  const handleProductLocalImage = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      showToast('Please select a valid image file (PNG, JPG, WebP).', 'error');
+      return;
+    }
+
+    setUploadingImage(true);
+    try {
+      const dataUrl = await MediaDB.fileToDataURL(file, 800, 0.85);
+      setEditingProduct(prev => ({ ...prev, image: dataUrl }));
+      showToast('Gadget image loaded from device!', 'success');
+    } catch (err) {
+      console.error(err);
+      showToast('Could not process image file.', 'error');
+    } finally {
+      setUploadingImage(false);
+      if (productImageFileRef.current) productImageFileRef.current.value = '';
     }
   };
 
@@ -411,15 +439,64 @@ export default function AdminStockPage() {
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Image URL</label>
+              {/* Product Image Section: Local Upload + URL */}
+              <div className="space-y-2">
+                <label className="block text-xs font-bold text-slate-700">Product Showcase Image</label>
+                
                 <input 
-                  type="url" 
-                  value={editingProduct.image || ''}
-                  onChange={e => setEditingProduct({ ...editingProduct, image: e.target.value })}
-                  placeholder="https://images.unsplash.com/..."
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all"
+                  type="file" 
+                  ref={productImageFileRef} 
+                  accept="image/*" 
+                  onChange={handleProductLocalImage} 
+                  className="hidden" 
                 />
+
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                  {/* Image Preview */}
+                  <div className="w-16 h-16 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0 flex items-center justify-center">
+                    {editingProduct.image ? (
+                      <img 
+                        src={editingProduct.image} 
+                        alt="Product preview" 
+                        className="w-full h-full object-contain p-1"
+                      />
+                    ) : (
+                      <ImageIcon className="w-6 h-6 text-slate-400" />
+                    )}
+                  </div>
+
+                  <div className="flex-1 w-full space-y-2">
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        disabled={uploadingImage}
+                        onClick={() => productImageFileRef.current?.click()}
+                        className="px-4 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs border border-blue-200 flex items-center gap-1.5 transition-all"
+                      >
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>{uploadingImage ? 'Loading...' : 'Upload Image from Computer / Phone'}</span>
+                      </button>
+
+                      {editingProduct.image && (
+                        <button
+                          type="button"
+                          onClick={() => setEditingProduct({ ...editingProduct, image: '' })}
+                          className="px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs border border-rose-200 transition-all"
+                        >
+                          Clear
+                        </button>
+                      )}
+                    </div>
+
+                    <input 
+                      type="text" 
+                      value={editingProduct.image || ''}
+                      onChange={e => setEditingProduct({ ...editingProduct, image: e.target.value })}
+                      placeholder="Or paste external image URL (https://...)"
+                      className="w-full px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all"
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="pt-2 flex gap-3 shrink-0">

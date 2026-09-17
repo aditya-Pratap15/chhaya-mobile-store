@@ -13,6 +13,7 @@ export const DEFAULT_SETTINGS = {
     hoursWeek: 'Mon – Sat: 10:00 AM – 9:30 PM',
     hoursSun: 'Sunday: 11:00 AM – 6:00 PM',
     mapEmbed: 'https://maps.google.com/maps?q=25.1749388,80.8668289&t=&z=16&ie=UTF8&iwloc=&output=embed',
+    googleReviewUrl: 'https://www.google.com/maps/place/Sony+Dharmshala+Chitarkoot+Dham+M.P./@25.1755836,80.8652137,857m/data=!3m1!1e3!4m8!3m7!1s0x3984a63a69f3c01d:0x66ba352b5bd3deab!8m2!3d25.1749388!4d80.8668289!9m1!1b1!16s%2Fg%2F11h9zslwhs?entry=ttu&g_ep=EgoyMDI2MDkxNC4wIKXMDSoASAFQAw%3D%3D',
     payments: 'In-store Counter: Cash, PhonePe, Google Pay, Paytm UPI, Debit/Credit Cards.'
   },
   announcement: {

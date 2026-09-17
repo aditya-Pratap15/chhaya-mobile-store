@@ -30,6 +30,7 @@ import AdminStockPage from './pages/admin/AdminStockPage';
 import AdminRepairsPage from './pages/admin/AdminRepairsPage';
 import AdminProfilePage from './pages/admin/AdminProfilePage';
 import AdminBookingsPage from './pages/admin/AdminBookingsPage';
+import AdminReviewsPage from './pages/admin/AdminReviewsPage';
 
 // Storefront Shell Layout
 function StorefrontLayout() {
@@ -79,6 +80,7 @@ export default function App() {
             <Route path="bookings" element={<AdminBookingsPage />} />
             <Route path="stock" element={<AdminStockPage />} />
             <Route path="repairs" element={<AdminRepairsPage />} />
+            <Route path="reviews" element={<AdminReviewsPage />} />
             <Route path="profile" element={<AdminProfilePage />} />
           </Route>
 

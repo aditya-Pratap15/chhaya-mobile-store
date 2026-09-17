@@ -118,16 +118,16 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm flex items-center justify-between">
+        <Link to="/admin/reviews" className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm flex items-center justify-between hover:shadow-md transition-all group">
           <div>
             <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">Customer Reviews</span>
             <span className="text-2xl font-black text-slate-900 block mt-0.5">4.9 ★</span>
-            <span className="text-[11px] text-amber-600 font-bold">{reviews.length} Verified in DB</span>
+            <span className="text-[11px] text-amber-600 font-bold group-hover:text-amber-700">{reviews.length} Verified • Manage →</span>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:scale-105 transition-transform">
             <Star className="w-6 h-6 fill-amber-500 text-amber-500" />
           </div>
-        </div>
+        </Link>
 
         <div className="bg-white rounded-3xl p-5 border border-slate-200/90 shadow-sm flex items-center justify-between">
           <div>

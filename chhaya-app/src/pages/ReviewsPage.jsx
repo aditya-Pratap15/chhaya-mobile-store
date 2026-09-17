@@ -7,11 +7,12 @@ import {
   ShieldCheck, 
   Sparkles, 
   Filter,
-  ThumbsUp
+  ThumbsUp,
+  ExternalLink
 } from 'lucide-react';
 
 export default function ReviewsPage() {
-  const { reviews, setActiveReviewModal } = useApp();
+  const { reviews, setActiveReviewModal, settings } = useApp();
   const [selectedTag, setSelectedTag] = useState('All');
   const [minRating, setMinRating] = useState(0);
 
@@ -43,13 +44,26 @@ export default function ReviewsPage() {
           </p>
         </div>
 
-        <button
-          onClick={() => setActiveReviewModal(true)}
-          className="px-6 py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2 shrink-0"
-        >
-          <MessageSquarePlus className="w-4 h-4" />
-          <span>Write a Verified Review</span>
-        </button>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 shrink-0">
+          <a
+            href={settings?.store?.googleReviewUrl || 'https://www.google.com/maps/place/Sony+Dharmshala+Chitarkoot+Dham+M.P./@25.1755836,80.8652137,857m/data=!3m1!1e3!4m8!3m7!1s0x3984a63a69f3c01d:0x66ba352b5bd3deab!8m2!3d25.1749388!4d80.8668289!9m1!1b1!16s%2Fg%2F11h9zslwhs?entry=ttu&g_ep=EgoyMDI2MDkxNC4wIKXMDSoASAFQAw%3D%3D'}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-5 py-3 rounded-2xl bg-white hover:bg-slate-100 text-slate-900 font-extrabold text-xs shadow-md transition-all flex items-center justify-center gap-2"
+          >
+            <img src="https://www.google.com/favicon.ico" alt="Google" className="w-4 h-4 rounded-full" />
+            <span>Review on Google Maps</span>
+            <ExternalLink className="w-3.5 h-3.5 text-blue-600" />
+          </a>
+
+          <button
+            onClick={() => setActiveReviewModal(true)}
+            className="px-5 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2"
+          >
+            <MessageSquarePlus className="w-4 h-4" />
+            <span>Write Verified Review</span>
+          </button>
+        </div>
       </div>
 
       {/* Review Metrics Bento */}

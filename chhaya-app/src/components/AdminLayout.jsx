@@ -16,7 +16,8 @@ import {
   ChevronRight,
   Store,
   Film,
-  Calendar
+  Calendar,
+  Star
 } from 'lucide-react';
 
 export default function AdminLayout() {
@@ -41,6 +42,7 @@ export default function AdminLayout() {
     { to: '/admin/media', label: 'Hero Video & Gallery', icon: Film },
     { to: '/admin/stock', label: 'Stock & Gadgets', icon: Smartphone },
     { to: '/admin/repairs', label: 'Repair Rate Cards', icon: Wrench },
+    { to: '/admin/reviews', label: 'Customer Reviews', icon: Star },
     { to: '/admin/profile', label: 'Store & Profile Settings', icon: UserCog },
   ];
 

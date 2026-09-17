@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { X, Star, CheckCircle2, MessageSquare, ShieldCheck } from 'lucide-react';
+import { X, Star, CheckCircle2, MessageSquare, ShieldCheck, ExternalLink } from 'lucide-react';
 
 export default function ReviewModal() {
-  const { activeReviewModal, setActiveReviewModal, addReview, showToast } = useApp();
+  const { activeReviewModal, setActiveReviewModal, addReview, showToast, settings } = useApp();
   const [name, setName] = useState('');
   const [device, setDevice] = useState('');
   const [service, setService] = useState('Screen Replacement');
@@ -56,6 +56,32 @@ export default function ReviewModal() {
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 text-left overflow-y-auto flex-1">
           
+          {/* Direct Google Reviews Option */}
+          <div className="p-3.5 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/80 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5 rounded-full bg-white p-0.5 shadow-xs shrink-0" />
+              <div>
+                <span className="text-xs font-bold text-slate-900 block">Want your review on Google Maps?</span>
+                <span className="text-[10px] text-slate-500">Opens Chhaya Mobiles Chitrakoot Dham official Google page</span>
+              </div>
+            </div>
+            <a
+              href={settings?.store?.googleReviewUrl || 'https://www.google.com/maps/place/Sony+Dharmshala+Chitarkoot+Dham+M.P./@25.1755836,80.8652137,857m/data=!3m1!1e3!4m8!3m7!1s0x3984a63a69f3c01d:0x66ba352b5bd3deab!8m2!3d25.1749388!4d80.8668289!9m1!1b1!16s%2Fg%2F11h9zslwhs?entry=ttu&g_ep=EgoyMDI2MDkxNC4wIKXMDSoASAFQAw%3D%3D'}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] shadow-sm flex items-center gap-1.5 shrink-0 transition-all"
+            >
+              <span>Review on Google</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
+
+          <div className="flex items-center gap-2 my-1">
+            <div className="flex-1 h-px bg-slate-200"></div>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Or post to website catalog</span>
+            <div className="flex-1 h-px bg-slate-200"></div>
+          </div>
+
           {/* Star Rating Select */}
           <div>
             <label className="block text-xs font-bold text-slate-700 mb-2">Overall Rating</label>
