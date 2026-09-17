@@ -1,0 +1,322 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><title>Master Admin Sign In | Chhaya Mobiles</title><meta name="description" content="Chhaya Mobiles CMS — Restricted proprietor access portal."><link rel="stylesheet" href="site.css">
+<script src="shared.js"></script>
+</head><body class="bg-[#f8fafc] font-sans text-slate-800 antialiased min-h-screen flex items-center justify-center py-8"><main class="w-full max-w-md mx-auto p-4 sm:p-6"><div class="flex flex-col w-full">
+<div class="relative w-full bg-white rounded-3xl shadow-xl overflow-hidden p-6 sm:p-8 border border-slate-200/90">
+
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="w-full flex justify-center mb-3">
+<div class="p-2 bg-slate-50 rounded-2xl shadow-sm border border-slate-100">
+<img alt="Chhaya Mobiles Logo" class="h-12 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UpXC3bWtjZK90kB9gRDgBX5b0lU0MNEJtAY8UfnAKgBSgellOngJqV7o_W00IhbOLv65ldU_13LbxqXcGcfKwpPaFemF82eAfi92NA9TCB-D9j4UlHAc11DjucIOaNYRaJZ77kRCmX8vQhYOTDoEHIPTmzyHp4BOG00eGghrpQq4dcRvUd_LFXRRhxLTDn5mnTO1wDlQdvjpiBDUjm1n9PeXHowQKV595Qm5qbpZ4aD4BkAVgypapv-p8">
+</div>
+</div>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs uppercase tracking-wider mb-2 font-bold">
+<span class="material-symbols-outlined text-sm leading-none">admin_panel_settings</span>
+  Proprietor Console
+</span>
+<h1 class="text-2xl font-extrabold text-slate-900 tracking-tight mt-1">
+  Chhaya Mobiles Admin
+</h1>
+<p class="text-xs text-slate-500 max-w-xs mt-1">
+  Restricted Chitrakoot shop management terminal for Pushpendra Prajapati
+</p>
+
+<!-- PENDING SETUP CONTAINER (SHOWS ONLY IF SETUP NOT YET COMPLETED) -->
+<div id="pendingSetupBox" class="hidden w-full bg-blue-50/90 border border-blue-200 text-blue-950 rounded-2xl p-4 mt-4 text-left space-y-2.5">
+  <div class="flex items-center justify-between">
+    <span class="font-extrabold text-blue-900 flex items-center gap-1 text-xs">
+      <span class="material-symbols-outlined text-blue-600 text-base">developer_mode</span>
+      <span>Temporary Developer Access</span>
+    </span>
+    <span class="px-1.5 py-0.5 rounded bg-blue-200 text-blue-800 text-[10px] font-bold">Active</span>
+  </div>
+  <p class="text-[11px] text-blue-800 leading-relaxed">
+    Temporary credentials active for inspecting all admin pages before transferring to the real owner:
+  </p>
+  <div class="bg-white p-2.5 rounded-xl border border-blue-100 font-mono text-xs flex items-center justify-between text-slate-800">
+    <span>admin / admin123</span>
+    <button type="button" onclick="quickDevFill()" class="text-blue-700 font-sans font-bold hover:underline cursor-pointer">
+      1-Click Sign In
+    </button>
+  </div>
+  <div class="pt-2 border-t border-blue-100/80 flex items-center justify-between text-[11px]">
+    <span class="text-slate-600">For Real Owner:</span>
+    <a href="admin-setup.html" class="font-bold text-blue-700 hover:underline inline-flex items-center gap-0.5">
+      <span>Master Setup Portal</span>
+      <span class="material-symbols-outlined text-xs">arrow_forward</span>
+    </a>
+  </div>
+</div>
+
+<!-- NORMAL LOGIN FORM -->
+<form class="w-full mt-4 flex flex-col gap-3.5 text-left" id="adminLoginForm" onsubmit="event.preventDefault(); handleAdminSignIn();">
+<div class="flex flex-col gap-1">
+<label class="text-xs font-bold text-slate-700" for="adminUsername">
+  Admin Username or Registered Gmail
+</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-slate-400 text-lg pointer-events-none">badge</span>
+<input class="w-full pl-10 pr-3 py-2.5 rounded-xl bg-slate-50 text-slate-900 placeholder:text-slate-400 text-xs border border-slate-200 focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-600 transition-all font-medium" id="adminUsername" name="username" placeholder="Username or registered Gmail" required="" type="text">
+</div>
+</div>
+
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<label class="text-xs font-bold text-slate-700" for="adminPassword">
+  Master Password
+</label>
+<button type="button" onclick="openForgotModal()" class="text-[11px] font-bold text-blue-600 hover:underline">
+  Forgot Password?
+</button>
+</div>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-slate-400 text-lg pointer-events-none">lock</span>
+<input class="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-50 text-slate-900 placeholder:text-slate-400 text-xs border border-slate-200 focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-600 transition-all font-medium" id="adminPassword" name="password" placeholder="Enter password" required="" type="password">
+<button aria-label="Toggle password view" class="absolute right-3 text-slate-400 hover:text-slate-600 flex items-center" id="togglePasswordBtn" onclick="togglePasswordVisibility()" type="button">
+<span class="material-symbols-outlined text-lg" id="passwordEyeIcon">visibility_off</span>
+</button>
+</div>
+</div>
+
+<button class="w-full mt-2 py-3 px-4 rounded-xl bg-blue-700 hover:bg-blue-800 text-white text-xs font-extrabold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 active:scale-[0.99]" id="signInBtn" type="submit">
+<span class="material-symbols-outlined text-base">shield_person</span>
+<span>Secure Admin Sign In</span>
+</button>
+</form>
+
+<div class="w-full mt-3 p-3 rounded-xl bg-slate-100 text-slate-700 text-left text-xs flex items-center gap-2 hidden" id="loginFeedback">
+<span class="material-symbols-outlined text-blue-600 shrink-0 text-base" id="feedbackIcon">sync</span>
+<span id="feedbackMessage">Validating credentials...</span>
+</div>
+
+<div class="w-full flex items-center justify-between pt-4 mt-4 border-t border-slate-100 text-xs text-slate-500">
+<a href="index.html" class="inline-flex items-center gap-1 font-semibold text-slate-600 hover:text-blue-700">
+<span class="material-symbols-outlined text-sm">arrow_back</span> Return to Storefront
+</a>
+<button type="button" onclick="openForgotModal()" class="font-bold text-blue-700 hover:underline">
+  Forgot Username / Password?
+</button>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- FORGOT PASSWORD & RECOVERY MODAL -->
+<div id="forgotModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+  <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-200 p-6 sm:p-7 space-y-4 text-left">
+    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+      <div class="flex items-center gap-2 text-blue-700">
+        <span class="material-symbols-outlined text-lg">mail</span>
+        <h3 class="font-extrabold text-slate-900 text-base">Gmail Password Recovery</h3>
+      </div>
+      <button onclick="closeForgotModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center font-bold text-slate-500">✕</button>
+    </div>
+
+    <div id="recoveryStep1">
+      <p class="text-xs text-slate-500 leading-relaxed mb-3">
+        Enter the registered Gmail address configured during Master Admin setup. A password recovery code will be dispatched to your Gmail.
+      </p>
+      <form onsubmit="event.preventDefault(); handleSendRecoveryCode();" class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Registered Gmail</label>
+          <input type="email" id="recoveryEmailInput" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs focus:bg-white focus:ring-2 focus:ring-blue-600" placeholder="pushpendra@gmail.com">
+        </div>
+        <div id="recoveryErrorMsg" class="hidden text-xs text-red-600 font-semibold p-2 bg-red-50 rounded-lg"></div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeForgotModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100">Cancel</button>
+          <button type="submit" class="px-4 py-2 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs shadow-sm">Send Reset Link</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="recoveryStep2" class="hidden space-y-3">
+      <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900 space-y-1">
+        <div class="font-bold flex items-center gap-1 text-emerald-950">
+          <span class="material-symbols-outlined text-sm">check_circle</span>
+          <span>Security Code Generated</span>
+        </div>
+        <p class="text-[11px] text-emerald-800">Code generated for: <strong id="recoverySentEmail"></strong></p>
+        <p class="text-[11px] text-emerald-800">Your Username: <strong id="recoverySentUser" class="font-bold text-emerald-950"></strong></p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <a href="https://mail.google.com" target="_blank" class="flex-1 py-2 px-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold shadow-xs flex items-center justify-center gap-1">
+          <span class="material-symbols-outlined text-sm text-blue-600">open_in_new</span>
+          <span>Open Gmail</span>
+        </a>
+        <a id="recoveryMailtoLink" href="#" class="py-2 px-3 rounded-xl bg-blue-50 text-blue-700 text-xs font-bold flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm">mail</span>
+          <span>Email App</span>
+        </a>
+      </div>
+
+      <form onsubmit="event.preventDefault(); handlePerformInlineReset();" class="space-y-2.5 pt-2 border-t border-slate-100">
+        <span class="text-xs font-bold text-slate-800 block">Set New Password</span>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-600 mb-1">6-Digit Code from Gmail</label>
+          <input type="text" id="inlineResetCode" required class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono font-bold tracking-widest text-slate-900" placeholder="e.g. 6-digit OTP">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-600 mb-1">New Password</label>
+            <input type="password" id="inlineNewPassword" required class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs" placeholder="Min 4 chars">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-600 mb-1">Confirm</label>
+            <input type="password" id="inlineConfirmPassword" required class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs" placeholder="Re-enter">
+          </div>
+        </div>
+        <div id="inlineResetError" class="hidden text-xs text-red-600 font-semibold p-2 bg-red-50 rounded-lg"></div>
+        <button type="submit" class="w-full py-2.5 px-4 rounded-xl bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold shadow-sm">
+          Save New Password &amp; Sign In
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function togglePasswordVisibility() {
+    var passwordInput = document.getElementById('adminPassword');
+    var icon = document.getElementById('passwordEyeIcon');
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      icon.textContent = 'visibility';
+    } else {
+      passwordInput.type = 'password';
+      icon.textContent = 'visibility_off';
+    }
+  }
+
+  function handleAdminSignIn() {
+    var feedbackBox = document.getElementById('loginFeedback');
+    var feedbackMsg = document.getElementById('feedbackMessage');
+    var feedbackIcon = document.getElementById('feedbackIcon');
+    var submitBtn = document.getElementById('signInBtn');
+    var username = document.getElementById('adminUsername').value.trim();
+    var password = document.getElementById('adminPassword').value;
+
+    if (!username || !password) {
+      feedbackBox.classList.remove('hidden');
+      feedbackBox.className = 'w-full mt-3 p-3 rounded-xl bg-red-50 text-red-700 text-left text-xs flex items-center gap-2';
+      feedbackIcon.textContent = 'error';
+      feedbackMsg.textContent = 'Please enter both username/Gmail and password.';
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.classList.add('opacity-70');
+
+    var success = adminLogin(username, password);
+    if (success) {
+      feedbackBox.classList.remove('hidden');
+      feedbackBox.className = 'w-full mt-3 p-3 rounded-xl bg-emerald-50 text-emerald-800 text-left text-xs flex items-center gap-2';
+      feedbackIcon.textContent = 'check_circle';
+      feedbackMsg.textContent = 'Authenticated. Entering Workshop Dashboard...';
+      setTimeout(function() {
+        window.location.replace('admin-dashboard.html');
+      }, 350);
+    } else {
+      feedbackBox.classList.remove('hidden');
+      feedbackBox.className = 'w-full mt-3 p-3 rounded-xl bg-red-50 text-red-700 text-left text-xs flex items-center gap-2';
+      feedbackIcon.textContent = 'error';
+      feedbackMsg.textContent = 'Invalid credentials. Only the registered store proprietor can sign in.';
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('opacity-70');
+    }
+  }
+
+  function openForgotModal() {
+    document.getElementById('forgotModal').classList.remove('hidden');
+    document.getElementById('recoveryStep1').classList.remove('hidden');
+    document.getElementById('recoveryStep2').classList.add('hidden');
+    document.getElementById('recoveryErrorMsg').classList.add('hidden');
+  }
+
+  function closeForgotModal() {
+    document.getElementById('forgotModal').classList.add('hidden');
+  }
+
+  function handleSendRecoveryCode() {
+    var email = document.getElementById('recoveryEmailInput').value.trim();
+    var errEl = document.getElementById('recoveryErrorMsg');
+    if (!email) {
+      errEl.textContent = 'Please enter your registered Gmail address.';
+      errEl.classList.remove('hidden');
+      return;
+    }
+    var res = typeof requestPasswordReset === 'function' ? requestPasswordReset(email) : null;
+    if (res && res.success) {
+      document.getElementById('recoveryStep1').classList.add('hidden');
+      document.getElementById('recoveryStep2').classList.remove('hidden');
+      document.getElementById('recoverySentEmail').textContent = res.email;
+      document.getElementById('recoverySentUser').textContent = res.username;
+      document.getElementById('inlineResetCode').value = res.code;
+      if (res.mailtoUrl) {
+        document.getElementById('recoveryMailtoLink').href = res.mailtoUrl;
+      }
+    } else {
+      errEl.textContent = res ? res.message : 'No Master Admin matches this Gmail address.';
+      errEl.classList.remove('hidden');
+    }
+  }
+
+  function handlePerformInlineReset() {
+    var code = document.getElementById('inlineResetCode').value.trim();
+    var newPwd = document.getElementById('inlineNewPassword').value;
+    var confirm = document.getElementById('inlineConfirmPassword').value;
+    var errEl = document.getElementById('inlineResetError');
+
+    if (!code) {
+      errEl.textContent = 'Please enter the 6-digit code from your Gmail.';
+      errEl.classList.remove('hidden');
+      return;
+    }
+    if (newPwd.length < 4) {
+      errEl.textContent = 'Password must be at least 4 characters.';
+      errEl.classList.remove('hidden');
+      return;
+    }
+    if (newPwd !== confirm) {
+      errEl.textContent = 'Passwords do not match.';
+      errEl.classList.remove('hidden');
+      return;
+    }
+
+    var res = typeof resetPasswordWithToken === 'function' ? resetPasswordWithToken(code, newPwd) : null;
+    if (res && res.success) {
+      document.getElementById('adminPassword').value = newPwd;
+      document.getElementById('adminUsername').value = res.username;
+      closeForgotModal();
+      if (window.showToast) {
+        showToast('Password updated successfully! Signing in...', 'success');
+      }
+      setTimeout(function() {
+        handleAdminSignIn();
+      }, 500);
+    } else {
+      errEl.textContent = res ? res.message : 'Password reset failed.';
+      errEl.classList.remove('hidden');
+    }
+  }
+
+  function quickDevFill() {
+    document.getElementById('adminUsername').value = 'admin';
+    document.getElementById('adminPassword').value = 'admin123';
+    handleAdminSignIn();
+  }
+
+  // Route guard on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof isAdminLoggedIn === 'function' && isAdminLoggedIn()) {
+      window.location.replace('admin-dashboard.html');
+      return;
+    }
+    if (typeof isAdminSetupDone === 'function' && !isAdminSetupDone()) {
+      document.getElementById('pendingSetupBox').classList.remove('hidden');
+    }
+  });
+</script></main>
+</body></html>
