@@ -12,7 +12,8 @@ import {
   cloudSaveSettings, 
   cloudSaveMedia, 
   cloudSaveBooking, 
-  cloudUpdateBookingStatus 
+  cloudUpdateBookingStatus,
+  cloudDeleteBooking 
 } from '../services/firebaseSync';
 
 const AppContext = createContext(null);
@@ -126,10 +127,11 @@ export function AppProvider({ children }) {
 
   // Product Actions
   const saveProduct = (prod) => {
-    ChhayaDB.saveProduct(prod);
-    cloudSaveProduct(prod);
+    const isNew = !prod.id;
+    const saved = ChhayaDB.saveProduct(prod);
+    cloudSaveProduct(saved || prod);
     refreshAllData();
-    showToast(prod.id ? 'Product details updated & synced live!' : 'New gadget added to live store inventory!', 'success');
+    showToast(isNew ? 'New gadget added to live store inventory!' : 'Product details updated & synced live!', 'success');
   };
 
   const deleteProduct = (id) => {
@@ -149,10 +151,11 @@ export function AppProvider({ children }) {
 
   // Repair Actions
   const saveRepair = (srv) => {
-    ChhayaDB.saveRepair(srv);
-    cloudSaveRepair(srv);
+    const isNew = !srv.id;
+    const saved = ChhayaDB.saveRepair(srv);
+    cloudSaveRepair(saved || srv);
     refreshAllData();
-    showToast(srv.id ? 'Service rate card updated & synced live!' : 'New repair service added!', 'success');
+    showToast(isNew ? 'New repair service added!' : 'Service rate card updated & synced live!', 'success');
   };
 
   const deleteRepair = (id) => {
@@ -257,18 +260,21 @@ export function AppProvider({ children }) {
   // Media Actions
   const addMediaImage = (img) => {
     ChhayaDB.addMediaImage(img);
+    cloudSaveMedia(ChhayaDB.getMedia());
     refreshAllData();
     showToast('New showcase image added to homepage gallery!', 'success');
   };
 
   const deleteMediaImage = (id) => {
     ChhayaDB.deleteMediaImage(id);
+    cloudSaveMedia(ChhayaDB.getMedia());
     refreshAllData();
     showToast('Showcase image removed.', 'info');
   };
 
   const updateVideo = (videoObj) => {
     ChhayaDB.updateVideo(videoObj);
+    cloudSaveMedia(ChhayaDB.getMedia());
     refreshAllData();
     showToast('Hero showcase video updated!', 'success');
   };
@@ -318,6 +324,7 @@ export function AppProvider({ children }) {
         isLocalUploaded: false
       };
       ChhayaDB.updateVideo(defaultVideo);
+      cloudSaveMedia(ChhayaDB.getMedia());
       refreshAllData();
       showToast('Reset to original showcase video.', 'info');
     } catch (err) {
@@ -386,6 +393,7 @@ export function AppProvider({ children }) {
 
   const deleteBooking = (id) => {
     ChhayaDB.deleteBooking(id);
+    cloudDeleteBooking(id);
     refreshAllData();
     showToast('Booking removed.', 'info');
   };

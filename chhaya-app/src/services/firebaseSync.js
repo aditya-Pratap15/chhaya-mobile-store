@@ -270,3 +270,13 @@ export async function cloudUpdateBookingStatus(bookingId, status) {
     return { success: false, error: e };
   }
 }
+
+export async function cloudDeleteBooking(bookingId) {
+  try {
+    await deleteDoc(doc(firestore, 'bookings', bookingId));
+    return { success: true };
+  } catch (e) {
+    console.warn('Cloud delete booking warning:', e);
+    return { success: false, error: e };
+  }
+}

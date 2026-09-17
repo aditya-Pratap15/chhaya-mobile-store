@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useApp } from '../context/AppContext';
 import { 
   Play, 
@@ -56,30 +56,52 @@ export default function HeroMediaShowcase() {
 
   const videoRef = useRef(null);
 
+  const activateAudio = useCallback(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.muted = false;
+      video.volume = 1.0;
+      video.play().then(() => {
+        setIsPlaying(true);
+        setIsMuted(false);
+        setAudioBlocked(false);
+      }).catch((e) => console.log('Audio activation attempt:', e));
+    }
+  }, []);
+
   // Initialize and attempt unmuted autoplay on load
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
+    video.volume = 1.0;
     video.muted = false;
     setIsMuted(false);
+
     const playPromise = video.play();
 
     if (playPromise !== undefined) {
       playPromise
         .then(() => {
           setIsPlaying(true);
+          setIsMuted(false);
           setAudioBlocked(false);
         })
         .catch((err) => {
-          console.log('Autoplay blocked unmuted, trying muted:', err);
+          console.log('Autoplay blocked unmuted, arming auto-unmute on first gesture:', err);
           video.muted = true;
-          setIsMuted(true);
           setAudioBlocked(true);
-          video.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+          video.play().then(() => setIsPlaying(true)).catch(() => {});
+
+          const onFirstInteraction = () => {
+            activateAudio();
+            events.forEach(evt => window.removeEventListener(evt, onFirstInteraction, true));
+          };
+          const events = ['click', 'pointerdown', 'touchstart', 'scroll', 'keydown'];
+          events.forEach(evt => window.addEventListener(evt, onFirstInteraction, { capture: true, once: true, passive: true }));
         });
     }
-  }, [videoData.url]);
+  }, [videoData.url, activateAudio]);
 
   // Video Time Update & Progress
   const handleTimeUpdate = () => {
@@ -108,23 +130,24 @@ export default function HeroMediaShowcase() {
   }, [currentMode, images.length]);
 
   // Toggle Mute / Unmute
-  const toggleMute = () => {
+  const toggleMute = (e) => {
+    if (e) e.stopPropagation();
     if (videoRef.current) {
-      const nextMuted = !videoRef.current.muted;
+      const nextMuted = !isMuted;
       videoRef.current.muted = nextMuted;
+      videoRef.current.volume = nextMuted ? 0 : 1.0;
+      if (!nextMuted) {
+        videoRef.current.play().catch(() => {});
+      }
       setIsMuted(nextMuted);
-      if (!nextMuted) setAudioBlocked(false);
+      setAudioBlocked(false);
     }
   };
 
   // Unmute Audio Banner Click
-  const handleUnmuteAudio = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = false;
-      setIsMuted(false);
-      setAudioBlocked(false);
-      videoRef.current.play();
-    }
+  const handleUnmuteAudio = (e) => {
+    if (e) e.stopPropagation();
+    activateAudio();
   };
 
   // Toggle Play / Pause
@@ -162,20 +185,21 @@ export default function HeroMediaShowcase() {
             key={videoData.url}
             src={resolveUrl(videoData.url)}
             autoPlay
+            loop
             playsInline
             onTimeUpdate={handleTimeUpdate}
-            onEnded={handleVideoEnded}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover cursor-pointer"
+            onClick={activateAudio}
           />
 
           {/* Autoplay Audio Blocked Banner Overlay */}
           {audioBlocked && (
             <button
               onClick={handleUnmuteAudio}
-              className="absolute top-4 left-4 z-30 px-3.5 py-2 rounded-xl bg-blue-600/90 hover:bg-blue-600 text-white text-xs font-bold shadow-xl backdrop-blur-md flex items-center gap-2 animate-bounce-short transition-transform active:scale-95"
+              className="absolute top-4 left-4 z-30 px-4 py-2.5 rounded-2xl bg-blue-600/95 hover:bg-blue-600 text-white text-xs font-extrabold shadow-2xl backdrop-blur-md flex items-center gap-2 animate-bounce-short transition-transform active:scale-95 border border-blue-400/40"
             >
-              <VolumeX className="w-4 h-4 text-cyan-300 animate-pulse" />
-              <span>Click to Unmute Audio 🔊</span>
+              <Volume2 className="w-4 h-4 text-cyan-300 animate-pulse" />
+              <span>Tap for Sound 🔊 (Audio Ready)</span>
             </button>
           )}
 

@@ -63,18 +63,23 @@ export const ChhayaDB = {
   },
   saveProduct(prod) {
     const list = this.getProducts();
+    let saved = prod;
     if (!prod.id) {
       prod.id = 'prod-' + Date.now();
       list.unshift(prod);
+      saved = prod;
     } else {
       const idx = list.findIndex(p => p.id === prod.id);
       if (idx !== -1) {
         list[idx] = { ...list[idx], ...prod };
+        saved = list[idx];
       } else {
         list.unshift(prod);
+        saved = prod;
       }
     }
-    return safeSet(STORAGE_KEYS.PRODUCTS, list);
+    safeSet(STORAGE_KEYS.PRODUCTS, list);
+    return saved;
   },
   deleteProduct(id) {
     const list = this.getProducts().filter(p => p.id !== id);
@@ -97,18 +102,23 @@ export const ChhayaDB = {
   },
   saveRepair(repair) {
     const list = this.getRepairs();
+    let saved = repair;
     if (!repair.id) {
       repair.id = 'srv-' + Date.now();
       list.unshift(repair);
+      saved = repair;
     } else {
       const idx = list.findIndex(r => r.id === repair.id);
       if (idx !== -1) {
         list[idx] = { ...list[idx], ...repair };
+        saved = list[idx];
       } else {
         list.unshift(repair);
+        saved = repair;
       }
     }
-    return safeSet(STORAGE_KEYS.REPAIRS, list);
+    safeSet(STORAGE_KEYS.REPAIRS, list);
+    return saved;
   },
   deleteRepair(id) {
     const list = this.getRepairs().filter(r => r.id !== id);
