@@ -30,10 +30,13 @@ export default function AdminStockPage() {
   const categories = ['All', 'Pre-Owned Phones', 'Batteries & Power', 'Screen Protection', 'Cases & Covers', 'Audio & Cables'];
 
   const filteredProducts = useMemo(() => {
-    return products.filter((p) => {
+    return (products || []).filter((p) => {
+      if (!p) return false;
       const matchCat = selectedCat === 'All' || p.category === selectedCat;
-      const matchSearch = p.name.toLowerCase().includes(search.toLowerCase()) ||
-                          (p.sku && p.sku.toLowerCase().includes(search.toLowerCase()));
+      const nameStr = (p.name || '').toLowerCase();
+      const skuStr = (p.sku || '').toLowerCase();
+      const searchLower = (search || '').toLowerCase();
+      const matchSearch = nameStr.includes(searchLower) || skuStr.includes(searchLower);
       return matchCat && matchSearch;
     });
   }, [products, selectedCat, search]);

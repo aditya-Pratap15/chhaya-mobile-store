@@ -29,10 +29,13 @@ export default function AdminRepairsPage() {
     'Camera & Optics'
   ];
 
-  const filteredRepairs = repairs.filter(r => 
-    r.name.toLowerCase().includes(search.toLowerCase()) ||
-    r.category.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredRepairs = (repairs || []).filter(r => {
+    if (!r) return false;
+    const nameStr = (r.name || '').toLowerCase();
+    const catStr = (r.category || '').toLowerCase();
+    const searchLower = (search || '').toLowerCase();
+    return nameStr.includes(searchLower) || catStr.includes(searchLower);
+  });
 
   const handleSaveModal = (e) => {
     e.preventDefault();

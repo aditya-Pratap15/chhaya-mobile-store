@@ -20,13 +20,14 @@ export default function AdminBookingsPage() {
   const { bookings, updateBookingStatus, deleteBooking, showToast } = useApp();
   const [filterStatus, setFilterStatus] = useState("all");
 
-  const filtered = filterStatus === "all" ? bookings : bookings.filter(b => b.status === filterStatus);
+  const safeBookings = bookings || [];
+  const filtered = filterStatus === "all" ? safeBookings : safeBookings.filter(b => b?.status === filterStatus);
   const counts = {
-    all: bookings.length,
-    pending:   bookings.filter(b => b.status === "pending").length,
-    confirmed: bookings.filter(b => b.status === "confirmed").length,
-    completed: bookings.filter(b => b.status === "completed").length,
-    cancelled: bookings.filter(b => b.status === "cancelled").length
+    all: safeBookings.length,
+    pending:   safeBookings.filter(b => b?.status === "pending").length,
+    confirmed: safeBookings.filter(b => b?.status === "confirmed").length,
+    completed: safeBookings.filter(b => b?.status === "completed").length,
+    cancelled: safeBookings.filter(b => b?.status === "cancelled").length
   };
 
   const handleDelete = (id, name) => {

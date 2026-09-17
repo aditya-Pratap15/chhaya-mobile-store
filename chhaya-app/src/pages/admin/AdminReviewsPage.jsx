@@ -21,22 +21,30 @@ export default function AdminReviewsPage() {
   const store = settings?.store || {};
   const googleReviewUrl = store.googleReviewUrl || 'https://www.google.com/maps/place/Sony+Dharmshala+Chitarkoot+Dham+M.P./@25.1755836,80.8652137,857m/data=!3m1!1e3!4m8!3m7!1s0x3984a63a69f3c01d:0x66ba352b5bd3deab!8m2!3d25.1749388!4d80.8668289!9m1!1b1!16s%2Fg%2F11h9zslwhs?entry=ttu&g_ep=EgoyMDI2MDkxNC4wIKXMDSoASAFQAw%3D%3D';
 
-  const filteredReviews = reviews.filter(r => {
-    const matchesSearch = r.name.toLowerCase().includes(search.toLowerCase()) ||
-                          (r.comment && r.comment.toLowerCase().includes(search.toLowerCase())) ||
-                          (r.device && r.device.toLowerCase().includes(search.toLowerCase()));
-    const matchesRating = filterRating === 'all' || r.rating === Number(filterRating);
+  const safeReviews = reviews || [];
+
+  const filteredReviews = safeReviews.filter(r => {
+    if (!r) return false;
+    const nameStr = (r.name || '').toLowerCase();
+    const commentStr = (r.comment || '').toLowerCase();
+    const deviceStr = (r.device || '').toLowerCase();
+    const searchLower = (search || '').toLowerCase();
+
+    const matchesSearch = nameStr.includes(searchLower) ||
+                          commentStr.includes(searchLower) ||
+                          deviceStr.includes(searchLower);
+    const matchesRating = filterRating === 'all' || Number(r.rating) === Number(filterRating);
     return matchesSearch && matchesRating;
   });
 
   const handleDelete = (id, name) => {
-    if (window.confirm(`Are you sure you want to permanently delete the review from "${name}"?`)) {
+    if (window.confirm(`Are you sure you want to permanently delete the review from "${name || 'Customer'}"?`)) {
       deleteReview(id);
     }
   };
 
-  const avgRating = reviews.length > 0 
-    ? (reviews.reduce((acc, r) => acc + (r.rating || 5), 0) / reviews.length).toFixed(1)
+  const avgRating = safeReviews.length > 0 
+    ? (safeReviews.reduce((acc, r) => acc + (Number(r?.rating) || 5), 0) / safeReviews.length).toFixed(1)
     : '5.0';
 
   return (
@@ -73,7 +81,7 @@ export default function AdminReviewsPage() {
           </div>
           <div>
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Average Rating</span>
-            <span className="text-sm font-extrabold text-slate-900">{reviews.length} Verified Reviews in DB</span>
+            <span className="text-sm font-extrabold text-slate-900">{safeReviews.length} Verified Reviews in DB</span>
           </div>
         </div>
 
@@ -83,7 +91,7 @@ export default function AdminReviewsPage() {
           </div>
           <div>
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Pinned on Homepage</span>
-            <span className="text-sm font-extrabold text-slate-900">{reviews.filter(r => r.pinned).length} Featured</span>
+            <span className="text-sm font-extrabold text-slate-900">{safeReviews.filter(r => r?.pinned).length} Featured</span>
           </div>
         </div>
 

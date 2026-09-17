@@ -21,7 +21,13 @@ import {
 
 export default function AdminDashboardPage() {
   const { products, repairs, reviews, settings, updateSettings, showToast, bookings } = useApp();
-  const pendingBookings = (bookings || []).filter(b => b.status === 'pending').length;
+
+  const safeProducts = products || [];
+  const safeRepairs = repairs || [];
+  const safeReviews = reviews || [];
+  const safeBookings = bookings || [];
+
+  const pendingBookings = safeBookings.filter(b => b?.status === 'pending').length;
 
   const [announcementText, setAnnouncementText] = useState(
     settings?.announcement?.text || '🔥 Festival Special: Free 9D Tempered Glass with any Screen Replacement! Walk-ins welcome.'
@@ -30,9 +36,9 @@ export default function AdminDashboardPage() {
     settings?.announcement?.visible ?? true
   );
 
-  const totalStockUnits = products.reduce((sum, p) => sum + (Number(p.units) || 0), 0);
-  const lowStockItems = products.filter(p => Number(p.units) <= 3);
-  const activeRepairsCount = repairs.filter(r => r.status !== false).length;
+  const totalStockUnits = safeProducts.reduce((sum, p) => sum + (Number(p?.units) || 0), 0);
+  const lowStockItems = safeProducts.filter(p => Number(p?.units) <= 3);
+  const activeRepairsCount = safeRepairs.filter(r => r?.status !== false).length;
 
   const handleSaveAnnouncement = (e) => {
     e.preventDefault();
@@ -100,7 +106,7 @@ export default function AdminDashboardPage() {
           <div>
             <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">Total Inventory</span>
             <span className="text-2xl font-black text-slate-900 block mt-0.5">{totalStockUnits} Units</span>
-            <span className="text-[11px] text-blue-600 font-bold">{products.length} distinct SKUs</span>
+            <span className="text-[11px] text-blue-600 font-bold">{safeProducts.length} distinct SKUs</span>
           </div>
           <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
             <Smartphone className="w-6 h-6" />
@@ -122,7 +128,7 @@ export default function AdminDashboardPage() {
           <div>
             <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">Customer Reviews</span>
             <span className="text-2xl font-black text-slate-900 block mt-0.5">4.9 ★</span>
-            <span className="text-[11px] text-amber-600 font-bold group-hover:text-amber-700">{reviews.length} Verified • Manage →</span>
+            <span className="text-[11px] text-amber-600 font-bold group-hover:text-amber-700">{safeReviews.length} Verified • Manage →</span>
           </div>
           <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:scale-105 transition-transform">
             <Star className="w-6 h-6 fill-amber-500 text-amber-500" />
@@ -215,7 +221,7 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="divide-y divide-slate-100">
-            {products.slice(0, 5).map((p) => (
+            {safeProducts.slice(0, 5).map((p) => (
               <div key={p.id} className="py-3 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <img src={p.image} alt={p.name} className="w-10 h-10 rounded-xl object-contain bg-slate-50 p-1 shrink-0" />
@@ -245,7 +251,7 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="divide-y divide-slate-100">
-            {repairs.slice(0, 5).map((r) => (
+            {safeRepairs.slice(0, 5).map((r) => (
               <div key={r.id} className="py-3 flex items-center justify-between gap-3">
                 <div className="text-left space-y-0.5">
                   <h4 className="text-xs font-bold text-slate-900">{r.name}</h4>

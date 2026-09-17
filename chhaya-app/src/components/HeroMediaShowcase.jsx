@@ -185,9 +185,9 @@ export default function HeroMediaShowcase() {
             key={videoData.url}
             src={resolveUrl(videoData.url)}
             autoPlay
-            loop
             playsInline
             onTimeUpdate={handleTimeUpdate}
+            onEnded={handleVideoEnded}
             className="w-full h-full object-cover cursor-pointer"
             onClick={activateAudio}
           />
