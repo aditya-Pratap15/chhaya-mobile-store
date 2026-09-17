@@ -50,29 +50,33 @@ export default function HeroMediaShowcase() {
   const [currentMode, setCurrentMode] = useState('video');
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(true); // Default to muted to avoid startling users
+  const [isMuted, setIsMuted] = useState(false); // Default to unmuted per user request
   const [audioBlocked, setAudioBlocked] = useState(false);
   const [progress, setProgress] = useState(0);
 
   const videoRef = useRef(null);
 
-  // Initialize and attempt muted autoplay on load (web standards prefer muted auto-play)
+  // Initialize and attempt unmuted autoplay on load
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    video.muted = true;
-    setIsMuted(true);
+    video.muted = false;
+    setIsMuted(false);
     const playPromise = video.play();
 
     if (playPromise !== undefined) {
       playPromise
         .then(() => {
           setIsPlaying(true);
+          setAudioBlocked(false);
         })
         .catch((err) => {
-          console.log('Autoplay blocked:', err);
-          setIsPlaying(false);
+          console.log('Autoplay blocked unmuted, trying muted:', err);
+          video.muted = true;
+          setIsMuted(true);
+          setAudioBlocked(true);
+          video.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
         });
     }
   }, [videoData.url]);
@@ -158,7 +162,6 @@ export default function HeroMediaShowcase() {
             key={videoData.url}
             src={resolveUrl(videoData.url)}
             autoPlay
-            muted
             playsInline
             onTimeUpdate={handleTimeUpdate}
             onEnded={handleVideoEnded}
