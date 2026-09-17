@@ -19,6 +19,13 @@ import {
 export default function HeroMediaShowcase() {
   const { media } = useApp();
   
+  const resolveUrl = (url) => {
+    if (!url) return '';
+    if (url.startsWith('http') || url.startsWith('blob:') || url.startsWith('data:')) return url;
+    if (url.startsWith('/')) return import.meta.env.BASE_URL + url.slice(1);
+    return import.meta.env.BASE_URL + url;
+  };
+
   const videoData = media?.video || {
     url: '/final_video.mp4',
     title: 'Chhaya Mobiles Workshop & Store Showcase'
@@ -43,34 +50,29 @@ export default function HeroMediaShowcase() {
   const [currentMode, setCurrentMode] = useState('video');
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true); // Default to muted to avoid startling users
   const [audioBlocked, setAudioBlocked] = useState(false);
   const [progress, setProgress] = useState(0);
 
   const videoRef = useRef(null);
 
-  // Initialize and attempt unmuted autoplay on load
+  // Initialize and attempt muted autoplay on load (web standards prefer muted auto-play)
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    video.muted = false;
+    video.muted = true;
+    setIsMuted(true);
     const playPromise = video.play();
 
     if (playPromise !== undefined) {
       playPromise
         .then(() => {
           setIsPlaying(true);
-          setIsMuted(false);
-          setAudioBlocked(false);
         })
         .catch((err) => {
-          console.log('Browser blocked unmuted autoplay, falling back to muted autoplay:', err);
-          // Browser blocked unmuted autoplay -> fall back to muted and show prompt
-          video.muted = true;
-          setIsMuted(true);
-          setAudioBlocked(true);
-          video.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+          console.log('Autoplay blocked:', err);
+          setIsPlaying(false);
         });
     }
   }, [videoData.url]);
@@ -154,8 +156,9 @@ export default function HeroMediaShowcase() {
           <video
             ref={videoRef}
             key={videoData.url}
-            src={videoData.url}
+            src={resolveUrl(videoData.url)}
             autoPlay
+            muted
             playsInline
             onTimeUpdate={handleTimeUpdate}
             onEnded={handleVideoEnded}
@@ -239,7 +242,7 @@ export default function HeroMediaShowcase() {
               }`}
             >
               <img 
-                src={img.url} 
+                src={resolveUrl(img.url)} 
                 alt={img.title || 'Shop Showcase'} 
                 className="w-full h-full object-cover"
               />

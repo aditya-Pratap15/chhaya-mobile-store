@@ -69,7 +69,10 @@ export default function AdminProfilePage() {
   const handleResetAvatar = () => {
     const defaultAvatar = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHzUo1VAkrY7o-Z1SnqK0uASXYnrrNdScnb81I8A27go177ycT4x4RX6CfCwiA5E9qB3Aqkh7Ge_JbEvMXDKW7QwdU9G2g3VArrxBIr1vpw2Cx_EHJCXMwXQ31Yu-tzNyPQy1J00ycW8wsSZgRxNCDdfWgYKEdva1o0ZUVKMNvd5SWBdM9k4WR1GrjmOvxZjc6u5E0jXkxkkktEumt4H7m1JCLCSrgXXmhRzxqPblwUzD_an1Q-sA91RKUAKBddFuPdNo';
     setOwnerData(prev => ({ ...prev, avatar: defaultAvatar }));
-    ChhayaDB.updateSettingKey('owner', { avatar: defaultAvatar });
+    updateSettings({
+      ...settings,
+      owner: { ...(settings.owner || {}), avatar: defaultAvatar }
+    });
     showToast('Reverted owner photo to default portrait.', 'info');
   };
 

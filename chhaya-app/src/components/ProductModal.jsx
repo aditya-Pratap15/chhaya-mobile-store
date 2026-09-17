@@ -3,7 +3,7 @@ import { useApp } from '../context/AppContext';
 import { X, ShoppingBag, ShieldCheck, CheckCircle2, MessageCircle, Phone, MapPin, Tag } from 'lucide-react';
 
 export default function ProductModal() {
-  const { activeProductModal, setActiveProductModal, settings, showToast } = useApp();
+  const { activeProductModal, setActiveProductModal, settings, showToast, addBooking } = useApp();
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
   const [pickupDate, setPickupDate] = useState('Today (Within 2 hours)');
@@ -21,6 +21,21 @@ export default function ProductModal() {
       return;
     }
 
+    const bookingPayload = {
+      customerName: customerName.trim(),
+      customerPhone: customerPhone.trim(),
+      deviceBrand: prod.brand || 'Product',
+      deviceModel: prod.name,
+      serviceName: 'Product Reservation (In-Store Pickup)',
+      serviceId: prod.id,
+      servicePrice: prod.price,
+      serviceDuration: 'N/A',
+      serviceWarranty: prod.warranty || 'Store Warranty',
+      preferredSlot: pickupDate,
+      channel: 'Web Form'
+    };
+
+    addBooking(bookingPayload);
     setReservedSuccess(true);
     showToast(`In-store pickup reserved for ${prod.name}!`, 'success');
   };

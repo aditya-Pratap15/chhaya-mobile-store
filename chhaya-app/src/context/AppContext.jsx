@@ -329,9 +329,11 @@ export function AppProvider({ children }) {
         fileType: file.type,
         fileSize: file.size
       });
-      ChhayaDB.updateSettingKey('owner', { avatar: dataUrl });
-      refreshAllData();
-      showToast('Owner photo updated and synced across website!', 'success');
+      const currentSettings = ChhayaDB.getSettings();
+      updateSettings({
+        ...currentSettings,
+        owner: { ...(currentSettings.owner || {}), avatar: dataUrl }
+      });
       return dataUrl;
     } catch (err) {
       console.error(err);

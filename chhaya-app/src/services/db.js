@@ -491,7 +491,8 @@ export const ChhayaDB = {
       ...booking
     };
     list.unshift(newBooking);
-    return safeSet(STORAGE_KEYS.BOOKINGS, list);
+    safeSet(STORAGE_KEYS.BOOKINGS, list);
+    return newBooking;
   },
   updateBookingStatus(id, status) {
     const list = this.getBookings();
