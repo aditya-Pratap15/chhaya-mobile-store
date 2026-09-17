@@ -41,7 +41,12 @@ function safeSet(key, value) {
 export const ChhayaDB = {
   // ─── Settings ───
   getSettings() {
-    return safeGet(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS);
+    const s = safeGet(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS);
+    if (s?.owner?.avatar && (s.owner.avatar.includes('aida-public') || s.owner.avatar.includes('googleusercontent.com'))) {
+      s.owner.avatar = '';
+      safeSet(STORAGE_KEYS.SETTINGS, s);
+    }
+    return s;
   },
   saveSettings(settings) {
     return safeSet(STORAGE_KEYS.SETTINGS, settings);

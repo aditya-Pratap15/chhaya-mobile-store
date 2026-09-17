@@ -247,12 +247,22 @@ export default function HomePage() {
       <section className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm flex flex-col lg:flex-row items-center gap-8 text-left">
         <div className="w-full lg:w-1/3 flex justify-center">
           <div className="relative">
-            <div className="w-48 h-48 sm:w-56 sm:h-56 rounded-3xl overflow-hidden shadow-2xl border-4 border-white ring-4 ring-blue-50">
-              <img 
-                src={owner.avatar || 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHzUo1VAkrY7o-Z1SnqK0uASXYnrrNdScnb81I8A27go177ycT4x4RX6CfCwiA5E9qB3Aqkh7Ge_JbEvMXDKW7QwdU9G2g3VArrxBIr1vpw2Cx_EHJCXMwXQ31Yu-tzNyPQy1J00ycW8wsSZgRxNCDdfWgYKEdva1o0ZUVKMNvd5SWBdM9k4WR1GrjmOvxZjc6u5E0jXkxkkktEumt4H7m1JCLCSrgXXmhRzxqPblwUzD_an1Q-sA91RKUAKBddFuPdNo'} 
-                alt={owner.name} 
-                className="w-full h-full object-cover"
-              />
+            <div className="w-48 h-48 sm:w-56 sm:h-56 rounded-3xl overflow-hidden shadow-2xl border-4 border-white ring-4 ring-blue-50 bg-gradient-to-br from-slate-100 to-blue-50 flex items-center justify-center">
+              {owner.avatar ? (
+                <img 
+                  src={owner.avatar} 
+                  alt={owner.name} 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center p-4 text-center">
+                  <div className="w-20 h-20 rounded-2xl bg-blue-600 text-white font-black text-2xl flex items-center justify-center shadow-md shadow-blue-600/30 mb-2">
+                    {owner.name ? owner.name.split(' ').map(n => n[0]).join('').slice(0, 2) : 'PP'}
+                  </div>
+                  <p className="text-xs font-bold text-slate-800">{owner.name || 'Pushpendra Prajapati'}</p>
+                  <span className="text-[10px] font-semibold text-blue-600">Store Proprietor</span>
+                </div>
+              )}
             </div>
             <span className="absolute -bottom-3 -right-3 px-3 py-1 rounded-full bg-blue-700 text-white text-xs font-bold shadow-lg flex items-center gap-1">
               <Award className="w-3.5 h-3.5 text-yellow-400" />

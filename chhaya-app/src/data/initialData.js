@@ -26,7 +26,7 @@ export const DEFAULT_SETTINGS = {
     experience: 'Started 2023 Till Now Running • Sony Dharmshala, Chitrakoot',
     estYear: '2023',
     bio: 'Chhaya Mobiles was established in 2023 at Sony Dharmshala, Kamta Nath Mandir Road, Chitrakoot Dham M.P. by Pushpendra Prajapati. Started from 2023 and continuously running till now, providing transparent on-the-counter smartphone repairs and certified gadget retail.',
-    avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHzUo1VAkrY7o-Z1SnqK0uASXYnrrNdScnb81I8A27go177ycT4x4RX6CfCwiA5E9qB3Aqkh7Ge_JbEvMXDKW7QwdU9G2g3VArrxBIr1vpw2Cx_EHJCXMwXQ31Yu-tzNyPQy1J00ycW8wsSZgRxNCDdfWgYKEdva1o0ZUVKMNvd5SWBdM9k4WR1GrjmOvxZjc6u5E0jXkxkkktEumt4H7m1JCLCSrgXXmhRzxqPblwUzD_an1Q-sA91RKUAKBddFuPdNo'
+    avatar: ''
   },
   media: {
     video: {

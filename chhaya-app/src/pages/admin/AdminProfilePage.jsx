@@ -21,7 +21,7 @@ import {
 import { ChhayaDB } from '../../services/db';
 
 export default function AdminProfilePage() {
-  const { settings, updateSettings, resetStoreDefaults, uploadOwnerAvatar, showToast } = useApp();
+  const { settings, updateSettings, resetStoreDefaults, uploadOwnerAvatar, deleteOwnerAvatar, showToast } = useApp();
 
   const avatarFileInputRef = useRef(null);
   const [avatarUploading, setAvatarUploading] = useState(false);
@@ -66,14 +66,17 @@ export default function AdminProfilePage() {
     }
   };
 
-  const handleResetAvatar = () => {
-    const defaultAvatar = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHzUo1VAkrY7o-Z1SnqK0uASXYnrrNdScnb81I8A27go177ycT4x4RX6CfCwiA5E9qB3Aqkh7Ge_JbEvMXDKW7QwdU9G2g3VArrxBIr1vpw2Cx_EHJCXMwXQ31Yu-tzNyPQy1J00ycW8wsSZgRxNCDdfWgYKEdva1o0ZUVKMNvd5SWBdM9k4WR1GrjmOvxZjc6u5E0jXkxkkktEumt4H7m1JCLCSrgXXmhRzxqPblwUzD_an1Q-sA91RKUAKBddFuPdNo';
-    setOwnerData(prev => ({ ...prev, avatar: defaultAvatar }));
-    updateSettings({
-      ...settings,
-      owner: { ...(settings.owner || {}), avatar: defaultAvatar }
-    });
-    showToast('Reverted owner photo to default portrait.', 'info');
+  const handleDeleteAvatar = async () => {
+    setOwnerData(prev => ({ ...prev, avatar: '' }));
+    if (typeof deleteOwnerAvatar === 'function') {
+      await deleteOwnerAvatar();
+    } else {
+      updateSettings({
+        ...settings,
+        owner: { ...(settings.owner || {}), avatar: '' }
+      });
+      showToast('Owner photo removed completely.', 'success');
+    }
   };
 
   const [storeData, setStoreData] = useState({
@@ -183,12 +186,16 @@ export default function AdminProfilePage() {
                 className="relative group cursor-pointer"
                 title="Click to upload new owner photo"
               >
-                <div className="w-16 h-16 rounded-full overflow-hidden ring-4 ring-white shadow-md bg-slate-200">
-                  <img 
-                    src={ownerData.avatar || 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHzUo1VAkrY7o-Z1SnqK0uASXYnrrNdScnb81I8A27go177ycT4x4RX6CfCwiA5E9qB3Aqkh7Ge_JbEvMXDKW7QwdU9G2g3VArrxBIr1vpw2Cx_EHJCXMwXQ31Yu-tzNyPQy1J00ycW8wsSZgRxNCDdfWgYKEdva1o0ZUVKMNvd5SWBdM9k4WR1GrjmOvxZjc6u5E0jXkxkkktEumt4H7m1JCLCSrgXXmhRzxqPblwUzD_an1Q-sA91RKUAKBddFuPdNo'} 
-                    alt={ownerData.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform" 
-                  />
+                <div className="w-16 h-16 rounded-full overflow-hidden ring-4 ring-white shadow-md bg-slate-100 flex items-center justify-center">
+                  {ownerData.avatar ? (
+                    <img 
+                      src={ownerData.avatar} 
+                      alt={ownerData.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform" 
+                    />
+                  ) : (
+                    <User className="w-8 h-8 text-slate-400" />
+                  )}
                 </div>
                 <div className="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
                   <Camera className="w-5 h-5 text-white" />
@@ -217,11 +224,12 @@ export default function AdminProfilePage() {
               </button>
               <button
                 type="button"
-                onClick={handleResetAvatar}
-                className="px-3 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-600 border border-slate-200 text-xs font-semibold transition-all"
-                title="Reset to default portrait"
+                onClick={handleDeleteAvatar}
+                className="px-3 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-semibold flex items-center gap-1.5 transition-all"
+                title="Delete photo completely from database"
               >
                 <Trash2 className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Delete</span>
               </button>
             </div>
           </div>

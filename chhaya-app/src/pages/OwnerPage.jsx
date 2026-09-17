@@ -43,12 +43,22 @@ export default function OwnerPage() {
           
           {/* Avatar / Photo */}
           <div className="relative shrink-0">
-            <div className="w-52 h-52 sm:w-64 sm:h-64 rounded-3xl overflow-hidden border-4 border-white/20 shadow-2xl ring-4 ring-cyan-400/30">
-              <img 
-                src={owner.avatar || 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHzUo1VAkrY7o-Z1SnqK0uASXYnrrNdScnb81I8A27go177ycT4x4RX6CfCwiA5E9qB3Aqkh7Ge_JbEvMXDKW7QwdU9G2g3VArrxBIr1vpw2Cx_EHJCXMwXQ31Yu-tzNyPQy1J00ycW8wsSZgRxNCDdfWgYKEdva1o0ZUVKMNvd5SWBdM9k4WR1GrjmOvxZjc6u5E0jXkxkkktEumt4H7m1JCLCSrgXXmhRzxqPblwUzD_an1Q-sA91RKUAKBddFuPdNo'} 
-                alt={owner.name || 'Pushpendra Prajapati'} 
-                className="w-full h-full object-cover"
-              />
+            <div className="w-52 h-52 sm:w-64 sm:h-64 rounded-3xl overflow-hidden border-4 border-white/20 shadow-2xl ring-4 ring-cyan-400/30 bg-slate-800/80 flex items-center justify-center">
+              {owner.avatar ? (
+                <img 
+                  src={owner.avatar} 
+                  alt={owner.name || 'Pushpendra Prajapati'} 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center p-6 text-center">
+                  <div className="w-24 h-24 rounded-3xl bg-blue-600 text-white font-black text-3xl flex items-center justify-center shadow-lg shadow-blue-600/40 mb-3 border border-blue-400/40">
+                    {owner.name ? owner.name.split(' ').map(n => n[0]).join('').slice(0, 2) : 'PP'}
+                  </div>
+                  <p className="text-sm font-extrabold text-white">{owner.name || 'Pushpendra Prajapati'}</p>
+                  <span className="text-xs text-cyan-300 font-semibold">Proprietor &amp; Master Tech</span>
+                </div>
+              )}
             </div>
             <div className="absolute -bottom-3 -right-3 px-3.5 py-1.5 rounded-full bg-blue-600 text-white text-xs font-black shadow-lg flex items-center gap-1.5 border border-blue-400">
               <Award className="w-4 h-4 text-yellow-300" />

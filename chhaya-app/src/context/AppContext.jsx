@@ -85,6 +85,10 @@ export function AppProvider({ children }) {
         try { localStorage.setItem('chhaya_reviews_v4', JSON.stringify(liveReviews)); } catch(e){}
       },
       onSettings: (liveSettings) => {
+        if (liveSettings?.owner?.avatar && (liveSettings.owner.avatar.includes('aida-public') || liveSettings.owner.avatar.includes('googleusercontent.com'))) {
+          liveSettings.owner.avatar = '';
+          cloudSaveSettings(liveSettings);
+        }
         setSettings(liveSettings);
         try { localStorage.setItem('chhaya_store_settings_v4', JSON.stringify(liveSettings)); } catch(e){}
       },
@@ -342,6 +346,23 @@ export function AppProvider({ children }) {
     }
   };
 
+  const deleteOwnerAvatar = async () => {
+    try {
+      await MediaDB.deleteFile('owner_avatar');
+    } catch (err) {
+      console.warn('Could not delete from MediaDB', err);
+    }
+    const currentSettings = ChhayaDB.getSettings();
+    const newSettings = {
+      ...currentSettings,
+      owner: { ...(currentSettings.owner || {}), avatar: '' }
+    };
+    ChhayaDB.saveSettings(newSettings);
+    cloudSaveSettings(newSettings);
+    refreshAllData();
+    showToast('Owner photo removed completely and deleted from database.', 'success');
+  };
+
   const saveMedia = (mediaObj) => {
     ChhayaDB.saveMedia(mediaObj);
     cloudSaveMedia(mediaObj);
@@ -397,6 +418,7 @@ export function AppProvider({ children }) {
     uploadHeroVideo,
     resetHeroVideo,
     uploadOwnerAvatar,
+    deleteOwnerAvatar,
     saveMedia,
     addBooking,
     updateBookingStatus,
