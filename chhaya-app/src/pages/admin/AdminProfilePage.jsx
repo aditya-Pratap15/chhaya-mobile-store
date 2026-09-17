@@ -16,7 +16,8 @@ import {
   Camera,
   Upload,
   Trash2,
-  Image as ImageIcon
+  Image as ImageIcon,
+  ExternalLink
 } from 'lucide-react';
 import { ChhayaDB } from '../../services/db';
 
@@ -95,6 +96,15 @@ export default function AdminProfilePage() {
     payments: settings?.store?.payments || ''
   });
 
+  useEffect(() => {
+    if (settings?.store) {
+      setStoreData(prev => ({
+        ...prev,
+        ...settings.store
+      }));
+    }
+  }, [settings?.store]);
+
   const [newPassword, setNewPassword] = useState('');
 
   const handleSaveAll = (e) => {
@@ -155,7 +165,7 @@ export default function AdminProfilePage() {
               <input 
                 type="text" 
                 required
-                value={ownerData.name}
+                value={ownerData.name || ''}
                 onChange={e => setOwnerData({ ...ownerData, name: e.target.value })}
                 className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all text-slate-800"
               />
@@ -165,7 +175,7 @@ export default function AdminProfilePage() {
               <label className="block text-xs font-bold text-slate-700 mb-1">Title</label>
               <input 
                 type="text" 
-                value={ownerData.title}
+                value={ownerData.title || ''}
                 onChange={e => setOwnerData({ ...ownerData, title: e.target.value })}
                 className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all text-slate-800"
               />
@@ -240,7 +250,7 @@ export default function AdminProfilePage() {
               <label className="block text-xs font-bold text-slate-700 mb-1">Experience Tag</label>
               <input 
                 type="text" 
-                value={ownerData.experience}
+                value={ownerData.experience || ''}
                 onChange={e => setOwnerData({ ...ownerData, experience: e.target.value })}
                 className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all text-slate-800"
               />
@@ -250,7 +260,7 @@ export default function AdminProfilePage() {
               <label className="block text-xs font-bold text-slate-700 mb-1">Avatar Image URL / Data URL</label>
               <input 
                 type="text" 
-                value={ownerData.avatar}
+                value={ownerData.avatar || ''}
                 onChange={e => setOwnerData({ ...ownerData, avatar: e.target.value })}
                 placeholder="https://... or upload above"
                 className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all text-slate-800 truncate"
@@ -262,7 +272,7 @@ export default function AdminProfilePage() {
             <label className="block text-xs font-bold text-slate-700 mb-1">Proprietor Bio / Philosophy</label>
             <textarea 
               rows="3"
-              value={ownerData.bio}
+              value={ownerData.bio || ''}
               onChange={e => setOwnerData({ ...ownerData, bio: e.target.value })}
               className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all text-slate-800"
             ></textarea>
@@ -281,7 +291,7 @@ export default function AdminProfilePage() {
               <label className="block text-xs font-bold text-slate-700 mb-1">Store Calling Phone</label>
               <input 
                 type="text" 
-                value={storeData.phone}
+                value={storeData.phone || ''}
                 onChange={e => setStoreData({ ...storeData, phone: e.target.value })}
                 className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all text-slate-800"
               />
@@ -291,7 +301,7 @@ export default function AdminProfilePage() {
               <label className="block text-xs font-bold text-slate-700 mb-1">WhatsApp Inquiry Number</label>
               <input 
                 type="text" 
-                value={storeData.whatsapp}
+                value={storeData.whatsapp || ''}
                 onChange={e => setStoreData({ ...storeData, whatsapp: e.target.value })}
                 className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all text-slate-800"
               />
@@ -303,7 +313,7 @@ export default function AdminProfilePage() {
               <label className="block text-xs font-bold text-slate-700 mb-1">Weekday Timings (Mon–Sat)</label>
               <input 
                 type="text" 
-                value={storeData.hoursWeek}
+                value={storeData.hoursWeek || ''}
                 onChange={e => setStoreData({ ...storeData, hoursWeek: e.target.value })}
                 className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all text-slate-800"
               />
@@ -313,7 +323,7 @@ export default function AdminProfilePage() {
               <label className="block text-xs font-bold text-slate-700 mb-1">Sunday Timings</label>
               <input 
                 type="text" 
-                value={storeData.hoursSun}
+                value={storeData.hoursSun || ''}
                 onChange={e => setStoreData({ ...storeData, hoursSun: e.target.value })}
                 className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all text-slate-800"
               />
@@ -324,7 +334,7 @@ export default function AdminProfilePage() {
             <label className="block text-xs font-bold text-slate-700 mb-1">Physical Address</label>
             <input 
               type="text" 
-              value={storeData.address}
+              value={storeData.address || ''}
               onChange={e => setStoreData({ ...storeData, address: e.target.value })}
               className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all text-slate-800"
             />
@@ -334,7 +344,7 @@ export default function AdminProfilePage() {
             <label className="block text-xs font-bold text-slate-700 mb-1">Prominent Landmark</label>
             <input 
               type="text" 
-              value={storeData.landmark}
+              value={storeData.landmark || ''}
               onChange={e => setStoreData({ ...storeData, landmark: e.target.value })}
               className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all text-slate-800"
             />
@@ -345,7 +355,7 @@ export default function AdminProfilePage() {
             <div className="flex gap-2">
               <input 
                 type="url" 
-                value={storeData.googleReviewUrl}
+                value={storeData.googleReviewUrl || ''}
                 onChange={e => setStoreData({ ...storeData, googleReviewUrl: e.target.value })}
                 placeholder="https://maps.google.com/..."
                 className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all text-slate-800"

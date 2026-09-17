@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavLink, Link, useNavigate, Outlet, Navigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { ChhayaDB } from '../services/db';
+import ErrorBoundary from './ErrorBoundary';
 import { 
   LayoutDashboard, 
   Smartphone, 
@@ -228,7 +229,9 @@ export default function AdminLayout() {
 
         {/* Main Content Area */}
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto overflow-x-hidden">
-          <Outlet />
+          <ErrorBoundary>
+            <Outlet />
+          </ErrorBoundary>
         </main>
 
       </div>
