@@ -195,21 +195,24 @@ export default function SpinnerModal() {
 
   return (
     <>
-      {/* ─── Floating Launcher Widget on Right Side ─── */}
-      <div className="fixed right-3 sm:right-6 bottom-24 sm:bottom-10 z-40 flex flex-col items-end">
+      {/* ─── Floating Launcher Widget on Middle Right Side ─── */}
+      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-40 flex flex-col items-end">
         <button
           onClick={() => setActiveSpinnerModal(true)}
-          className="group relative flex items-center gap-2.5 px-4 py-3 rounded-full bg-gradient-to-r from-amber-500 via-rose-500 to-indigo-600 text-white font-extrabold text-xs shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-white/80 cursor-pointer animate-pulse"
+          className="group relative flex items-center gap-2 pl-3.5 pr-2.5 py-2.5 sm:pl-4 sm:pr-3 sm:py-3 rounded-l-2xl bg-gradient-to-l from-amber-500 via-rose-500 to-indigo-600 text-white font-extrabold text-xs shadow-2xl hover:translate-x-[-4px] active:scale-95 transition-all duration-300 border-y-2 border-l-2 border-white/90 cursor-pointer"
           title="Click to Spin & Win Prizes!"
         >
-          <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center animate-spin">
+          <div className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center shrink-0 animate-spin">
             <Gift className="w-4 h-4 text-amber-200" />
           </div>
-          <span className="tracking-wide drop-shadow-sm font-black">
-            {activeVoucher && !isExpired ? '🎟️ View Voucher' : '🎁 Spin & Win!'}
-          </span>
-          <span className="absolute -top-2 -right-1 px-1.5 py-0.5 rounded-full bg-yellow-400 text-slate-950 font-black text-[9px] uppercase tracking-wider shadow-sm animate-bounce">
-            Win
+          <div className="flex flex-col text-left leading-tight pr-1">
+            <span className="text-[9px] uppercase tracking-wider font-extrabold text-amber-200">Lucky Draw</span>
+            <span className="tracking-wide drop-shadow-xs font-black text-xs">
+              {activeVoucher && !isExpired ? '🎟️ My Voucher' : '🎁 Spin & Win!'}
+            </span>
+          </div>
+          <span className="absolute -top-2.5 left-2 px-1.5 py-0.5 rounded-full bg-yellow-400 text-slate-950 font-black text-[8px] uppercase tracking-wider shadow-sm animate-bounce">
+            FREE
           </span>
         </button>
       </div>
