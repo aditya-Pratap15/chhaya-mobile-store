@@ -418,13 +418,13 @@ export default function SpinnerModal() {
               ) : (
 
                 /* ─── SCENARIO 3: Interactive Spinner Wheel ─── */
-                <div className="space-y-6 flex flex-col items-center">
+                <div className="space-y-5 sm:space-y-6 flex flex-col items-center">
                   
-                  {/* Wheel Outer Container */}
-                  <div className="relative w-[300px] h-[300px] sm:w-[320px] sm:h-[320px] flex items-center justify-center">
+                  {/* Wheel Outer Container (Responsive sizing for mobile) */}
+                  <div className="relative w-[260px] h-[260px] sm:w-[310px] sm:h-[310px] flex items-center justify-center">
                     
                     {/* Top Pointer Indicator */}
-                    <div className="absolute top-[-10px] left-1/2 -translate-x-1/2 z-20 w-0 h-0 border-l-[14px] border-l-transparent border-r-[14px] border-r-transparent border-t-[24px] border-t-amber-500 drop-shadow-md"></div>
+                    <div className="absolute top-[-8px] left-1/2 -translate-x-1/2 z-20 w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[22px] border-t-amber-500 drop-shadow-md"></div>
 
                     {/* Rotating SVG Wheel */}
                     <div 
