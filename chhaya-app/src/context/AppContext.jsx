@@ -25,12 +25,14 @@ export function AppProvider({ children }) {
   const [reviews, setReviews] = useState(() => ChhayaDB.getReviews());
   const [media, setMedia] = useState(() => ChhayaDB.getMedia());
   const [bookings, setBookings] = useState(() => ChhayaDB.getBookings());
+  const [spinnerClaims, setSpinnerClaims] = useState(() => ChhayaDB.getSpinnerClaims());
   const [adminSession, setAdminSession] = useState(() => ChhayaDB.getAdminSession());
 
   // Modal States
   const [activeProductModal, setActiveProductModal] = useState(null);
   const [activeBookingModal, setActiveBookingModal] = useState(null);
   const [activeReviewModal, setActiveReviewModal] = useState(false);
+  const [activeSpinnerModal, setActiveSpinnerModal] = useState(false);
 
   // Global Toast
   const [toast, setToast] = useState(null);
@@ -64,6 +66,7 @@ export function AppProvider({ children }) {
     }
     setMedia(baseMedia);
     setBookings(ChhayaDB.getBookings());
+    setSpinnerClaims(ChhayaDB.getSpinnerClaims());
     setAdminSession(ChhayaDB.getAdminSession());
   }, []);
 
@@ -398,6 +401,26 @@ export function AppProvider({ children }) {
     showToast('Booking removed.', 'info');
   };
 
+  // Spinner Actions
+  const claimSpinnerPrize = (claimData) => {
+    const newClaim = ChhayaDB.addSpinnerClaim(claimData);
+    refreshAllData();
+    showToast('🎁 Lucky Prize Voucher Activated!', 'success');
+    return newClaim;
+  };
+
+  const updateSpinnerClaimStatus = (id, status) => {
+    ChhayaDB.updateSpinnerClaimStatus(id, status);
+    refreshAllData();
+    showToast(`Voucher status updated to ${status}.`, 'success');
+  };
+
+  const deleteSpinnerClaim = (id) => {
+    ChhayaDB.deleteSpinnerClaim(id);
+    refreshAllData();
+    showToast('Voucher entry deleted.', 'info');
+  };
+
   const value = {
     settings,
     products,
@@ -405,6 +428,7 @@ export function AppProvider({ children }) {
     reviews,
     media,
     bookings,
+    spinnerClaims,
     adminSession,
     isAdmin: !!adminSession,
     toast,
@@ -431,6 +455,9 @@ export function AppProvider({ children }) {
     addBooking,
     updateBookingStatus,
     deleteBooking,
+    claimSpinnerPrize,
+    updateSpinnerClaimStatus,
+    deleteSpinnerClaim,
     login,
     logout,
     setupAdmin,
@@ -445,7 +472,9 @@ export function AppProvider({ children }) {
     activeBookingModal,
     setActiveBookingModal,
     activeReviewModal,
-    setActiveReviewModal
+    setActiveReviewModal,
+    activeSpinnerModal,
+    setActiveSpinnerModal
   };
 
   return (

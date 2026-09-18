@@ -18,7 +18,8 @@ import {
   Store,
   Film,
   Calendar,
-  Star
+  Star,
+  Gift
 } from 'lucide-react';
 
 export default function AdminLayout() {
@@ -40,6 +41,7 @@ export default function AdminLayout() {
   const navItems = [
     { to: '/admin/dashboard', label: 'Command Center', icon: LayoutDashboard },
     { to: '/admin/bookings', label: 'Bench Bookings', icon: Calendar, badge: pendingBookings },
+    { to: '/admin/spinner', label: 'Lucky Wheel & Vouchers', icon: Gift },
     { to: '/admin/media', label: 'Hero Video & Gallery', icon: Film },
     { to: '/admin/stock', label: 'Stock & Gadgets', icon: Smartphone },
     { to: '/admin/repairs', label: 'Repair Rate Cards', icon: Wrench },

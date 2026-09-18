@@ -9,6 +9,7 @@ import Toast from './components/Toast';
 import ProductModal from './components/ProductModal';
 import BookingModal from './components/BookingModal';
 import ReviewModal from './components/ReviewModal';
+import SpinnerModal from './components/SpinnerModal';
 import AdminLayout from './components/AdminLayout';
 import ScrollToTop from './components/ScrollToTop';
 
@@ -31,6 +32,7 @@ import AdminRepairsPage from './pages/admin/AdminRepairsPage';
 import AdminProfilePage from './pages/admin/AdminProfilePage';
 import AdminBookingsPage from './pages/admin/AdminBookingsPage';
 import AdminReviewsPage from './pages/admin/AdminReviewsPage';
+import AdminSpinnerPage from './pages/admin/AdminSpinnerPage';
 
 // Storefront Shell Layout
 function StorefrontLayout() {
@@ -46,6 +48,7 @@ function StorefrontLayout() {
       <ProductModal />
       <BookingModal />
       <ReviewModal />
+      <SpinnerModal />
       <Toast />
     </div>
   );
@@ -78,6 +81,7 @@ export default function App() {
             <Route path="dashboard" element={<AdminDashboardPage />} />
             <Route path="media" element={<AdminMediaPage />} />
             <Route path="bookings" element={<AdminBookingsPage />} />
+            <Route path="spinner" element={<AdminSpinnerPage />} />
             <Route path="stock" element={<AdminStockPage />} />
             <Route path="repairs" element={<AdminRepairsPage />} />
             <Route path="reviews" element={<AdminReviewsPage />} />

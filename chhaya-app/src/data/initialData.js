@@ -50,6 +50,27 @@ export const DEFAULT_SETTINGS = {
         url: '/interior.png'
       }
     ]
+  },
+  productCategories: [
+    'Pre-Owned Phones',
+    'Batteries & Power',
+    'Screen Protection',
+    'Cases & Covers',
+    'Audio & Cables'
+  ],
+  spinner: {
+    enabled: true,
+    title: 'Chitrakoot Lucky Spin & Win',
+    subtitle: 'Spin the wheel to win instant counter discounts & gifts!',
+    expiryMinutes: 120,
+    slices: [
+      { id: 's1', label: '₹150 OFF Repair', prize: '₹150 Flat Discount on Screen or Motherboard Repair', code: 'CHHAYA-REP150', color: '#2563eb', textColor: '#ffffff' },
+      { id: 's2', label: 'Free 9D Glass', prize: 'Free 9D Tempered Glass Installation on Any Phone', code: 'CHHAYA-9DGLASS', color: '#059669', textColor: '#ffffff' },
+      { id: 's3', label: '10% Gadget OFF', prize: '10% Instant OFF on Any Audio or Power Gadget', code: 'CHHAYA-GADGET10', color: '#d97706', textColor: '#ffffff' },
+      { id: 's4', label: '₹50 OFF Cover', prize: '₹50 Flat OFF on Any Mobile Cover or Case', code: 'CHHAYA-COVER50', color: '#7c3aed', textColor: '#ffffff' },
+      { id: 's5', label: 'Free Cable Guard', prize: 'Free Spiral Cable Protector Set (Pack of 4)', code: 'CHHAYA-FREEPROT', color: '#db2777', textColor: '#ffffff' },
+      { id: 's6', label: '₹200 OFF Combo', prize: '₹200 Instant OFF on Combo (Screen + Battery)', code: 'CHHAYA-COMBO200', color: '#0891b2', textColor: '#ffffff' }
+    ]
   }
 };
 

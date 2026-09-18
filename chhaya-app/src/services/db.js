@@ -7,6 +7,7 @@ const STORAGE_KEYS = {
   REVIEWS: 'chhaya_reviews_v4',
   MEDIA: 'chhaya_hero_media_v4',
   BOOKINGS: 'chhaya_bookings_v4',
+  SPINNER_CLAIMS: 'chhaya_spinner_claims_v4',
   CREDENTIALS: 'chhaya_admin_credentials_v4',
   SETUP_DONE: 'chhaya_admin_setup_v4',
   SESSION: 'chhaya_admin_session_v4',
@@ -521,6 +522,45 @@ export const ChhayaDB = {
   deleteBooking(id) {
     const list = this.getBookings().filter(b => b.id !== id);
     return safeSet(STORAGE_KEYS.BOOKINGS, list);
+  },
+
+  // ─── Spinner Claims & Anti-Fraud Logs ───
+  getSpinnerClaims() {
+    return safeGet(STORAGE_KEYS.SPINNER_CLAIMS, []);
+  },
+  addSpinnerClaim(claim) {
+    const list = this.getSpinnerClaims();
+    const newClaim = {
+      id: 'claim-' + Date.now(),
+      voucherCode: claim.voucherCode || ('CHHAYA-SPIN-' + Math.random().toString(36).substring(2, 7).toUpperCase()),
+      customerName: claim.customerName,
+      customerPhone: claim.customerPhone,
+      prize: claim.prize,
+      couponCode: claim.couponCode || '',
+      createdAt: Date.now(),
+      expiresAt: claim.expiresAt || (Date.now() + (120 * 60 * 1000)),
+      status: 'active', // 'active' | 'redeemed' | 'expired'
+      ...claim
+    };
+    list.unshift(newClaim);
+    safeSet(STORAGE_KEYS.SPINNER_CLAIMS, list);
+    return newClaim;
+  },
+  updateSpinnerClaimStatus(id, status) {
+    const list = this.getSpinnerClaims();
+    const item = list.find(c => c.id === id || c.voucherCode === id);
+    if (item) {
+      item.status = status;
+      if (status === 'redeemed') {
+        item.redeemedAt = Date.now();
+      }
+      return safeSet(STORAGE_KEYS.SPINNER_CLAIMS, list);
+    }
+    return false;
+  },
+  deleteSpinnerClaim(id) {
+    const list = this.getSpinnerClaims().filter(c => c.id !== id && c.voucherCode !== id);
+    return safeSet(STORAGE_KEYS.SPINNER_CLAIMS, list);
   },
 
   // ─── Factory Reset ───
