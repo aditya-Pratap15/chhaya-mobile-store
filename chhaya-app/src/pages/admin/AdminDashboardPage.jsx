@@ -16,7 +16,10 @@ import {
   Clock,
   Save,
   Film,
-  Calendar
+  Calendar,
+  Zap,
+  SlidersHorizontal,
+  Eye
 } from 'lucide-react';
 
 export default function AdminDashboardPage() {
@@ -35,6 +38,21 @@ export default function AdminDashboardPage() {
   const [announcementVisible, setAnnouncementVisible] = useState(
     settings?.announcement?.visible ?? true
   );
+  const [announcementBlinking, setAnnouncementBlinking] = useState(
+    settings?.announcement?.blinking ?? false
+  );
+  const [announcementSlider, setAnnouncementSlider] = useState(
+    settings?.announcement?.slider ?? false
+  );
+
+  React.useEffect(() => {
+    if (settings?.announcement) {
+      if (settings.announcement.text !== undefined) setAnnouncementText(settings.announcement.text);
+      if (settings.announcement.visible !== undefined) setAnnouncementVisible(settings.announcement.visible);
+      if (settings.announcement.blinking !== undefined) setAnnouncementBlinking(settings.announcement.blinking);
+      if (settings.announcement.slider !== undefined) setAnnouncementSlider(settings.announcement.slider);
+    }
+  }, [settings?.announcement]);
 
   const totalStockUnits = safeProducts.reduce((sum, p) => sum + (Number(p?.units) || 0), 0);
   const lowStockItems = safeProducts.filter(p => Number(p?.units) <= 3);
@@ -45,9 +63,11 @@ export default function AdminDashboardPage() {
     updateSettings({
       ...settings,
       announcement: {
-        ...settings.announcement,
+        ...settings?.announcement,
         text: announcementText,
-        visible: announcementVisible
+        visible: announcementVisible,
+        blinking: announcementBlinking,
+        slider: announcementSlider
       }
     });
     showToast('Store broadcast banner updated and pushed to storefront!', 'success');
@@ -186,20 +206,118 @@ export default function AdminDashboardPage() {
             />
           </div>
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-1">
-            <label className="flex items-center gap-2 cursor-pointer select-none">
+          {/* Configuration Options Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {/* Option 1: Display on Storefront */}
+            <label className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-start gap-3 select-none ${
+              announcementVisible 
+                ? 'bg-blue-50/70 border-blue-300 shadow-xs' 
+                : 'bg-slate-50/70 border-slate-200 opacity-70 hover:opacity-100'
+            }`}>
               <input 
                 type="checkbox"
                 checked={announcementVisible}
                 onChange={e => setAnnouncementVisible(e.target.checked)}
-                className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 accent-blue-600"
+                className="mt-0.5 w-4 h-4 rounded text-blue-600 focus:ring-blue-500 accent-blue-600 shrink-0"
               />
-              <span className="text-xs font-bold text-slate-700">Display banner on live storefront</span>
+              <div className="space-y-0.5">
+                <span className="block text-xs font-bold text-slate-900">Show On Storefront</span>
+                <p className="text-[11px] text-slate-500 leading-tight">Display top notification banner to visitors</p>
+              </div>
             </label>
 
+            {/* Option 2: Blinking Attention Alert */}
+            <label className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-start gap-3 select-none ${
+              announcementBlinking 
+                ? 'bg-amber-50/70 border-amber-300 shadow-xs' 
+                : 'bg-slate-50/70 border-slate-200 opacity-70 hover:opacity-100'
+            }`}>
+              <input 
+                type="checkbox"
+                checked={announcementBlinking}
+                onChange={e => setAnnouncementBlinking(e.target.checked)}
+                className="mt-0.5 w-4 h-4 rounded text-amber-600 focus:ring-amber-500 accent-amber-600 shrink-0"
+              />
+              <div className="space-y-0.5">
+                <span className="flex items-center gap-1 text-xs font-bold text-slate-900">
+                  <Zap className="w-3.5 h-3.5 text-amber-600 fill-amber-500" />
+                  <span>Blinking Alert Effect</span>
+                </span>
+                <p className="text-[11px] text-slate-500 leading-tight">Flash &amp; pulse text to draw instant customer attention</p>
+              </div>
+            </label>
+
+            {/* Option 3: Moving Text Slider (Marquee) */}
+            <label className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-start gap-3 select-none ${
+              announcementSlider 
+                ? 'bg-indigo-50/70 border-indigo-300 shadow-xs' 
+                : 'bg-slate-50/70 border-slate-200 opacity-70 hover:opacity-100'
+            }`}>
+              <input 
+                type="checkbox"
+                checked={announcementSlider}
+                onChange={e => setAnnouncementSlider(e.target.checked)}
+                className="mt-0.5 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 accent-indigo-600 shrink-0"
+              />
+              <div className="space-y-0.5">
+                <span className="flex items-center gap-1 text-xs font-bold text-slate-900">
+                  <SlidersHorizontal className="w-3.5 h-3.5 text-indigo-600" />
+                  <span>Moving Text Slider</span>
+                </span>
+                <p className="text-[11px] text-slate-500 leading-tight">Smooth scrolling ticker sliding across the bar</p>
+              </div>
+            </label>
+          </div>
+
+          {/* Live Preview Box */}
+          <div className="rounded-2xl bg-slate-950 p-4 border border-slate-800 space-y-2">
+            <div className="flex items-center justify-between text-[11px] text-slate-400">
+              <span className="flex items-center gap-1.5 font-bold uppercase tracking-wider text-[10px] text-slate-400">
+                <Eye className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Live Storefront Preview</span>
+              </span>
+              <span className="text-[10px] text-slate-400">
+                Status: {announcementVisible ? (
+                  <span className="text-emerald-400 font-semibold">Active Live</span>
+                ) : (
+                  <span className="text-slate-400 font-semibold">Hidden</span>
+                )}
+              </span>
+            </div>
+
+            <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 text-white rounded-full py-1.5 px-4 border border-slate-800 flex items-center justify-between text-[11px] gap-2 overflow-hidden shadow-inner">
+              <div className={`flex items-center gap-2 overflow-hidden ${announcementSlider ? 'w-full flex-1' : 'truncate'}`}>
+                <span className={`inline-flex items-center justify-center p-0.5 rounded-full bg-amber-400/20 text-amber-300 shrink-0 ${announcementBlinking ? 'animate-blink' : ''}`}>
+                  <Sparkles className="w-3 h-3" />
+                </span>
+
+                {announcementSlider ? (
+                  <div className="overflow-hidden w-full relative flex items-center">
+                    <div className={`animate-marquee whitespace-nowrap font-semibold text-slate-100 ${announcementBlinking ? 'animate-blink' : ''}`}>
+                      <span className="mr-8">{announcementText || 'Your announcement message...'}</span>
+                      <span className="mr-8 text-amber-400 font-bold">✦</span>
+                      <span className="mr-8">{announcementText || 'Your announcement message...'}</span>
+                      <span className="mr-8 text-amber-400 font-bold">✦</span>
+                      <span className="mr-8">{announcementText || 'Your announcement message...'}</span>
+                    </div>
+                  </div>
+                ) : (
+                  <span className={`font-semibold text-slate-100 truncate ${announcementBlinking ? 'animate-blink' : ''}`}>
+                    {announcementText || 'Your announcement message...'}
+                  </span>
+                )}
+              </div>
+
+              <span className="hidden sm:inline-flex text-[10px] font-bold text-slate-400 shrink-0 pl-2">
+                Preview Bar
+              </span>
+            </div>
+          </div>
+
+          <div className="flex justify-end pt-1">
             <button
               type="submit"
-              className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5"
+              className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 cursor-pointer active:scale-95"
             >
               <Save className="w-4 h-4" />
               <span>Save &amp; Broadcast Live</span>

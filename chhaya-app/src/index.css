@@ -45,3 +45,38 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Announcement Marquee Ticker */
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 18s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Announcement High-Attention Blinker */
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.15;
+  }
+}
+
+.animate-blink {
+  animation: blink 1.1s ease-in-out infinite;
+}
+

@@ -19,7 +19,9 @@ export const DEFAULT_SETTINGS = {
   announcement: {
     text: '🔥 Festival Special: Free 9D Tempered Glass with any Screen Replacement! Walk-ins welcome.',
     visible: true,
-    tone: 'blue' // blue, amber, emerald, red
+    tone: 'blue', // blue, amber, emerald, red
+    blinking: false, // Blinking attention alert
+    slider: false    // Scrolling text slider (marquee)
   },
   owner: {
     name: 'Pushpendra Prajapati',

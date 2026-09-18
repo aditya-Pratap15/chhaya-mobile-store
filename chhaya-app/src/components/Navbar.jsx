@@ -63,15 +63,32 @@ export default function Navbar() {
       {/* ─── Ultra-Slim Floating Announcement Capsule ─── */}
       {announcement.visible && (
         <div className="pt-2 px-3 sm:px-6 max-w-7xl mx-auto w-full">
-          <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 text-white rounded-full py-1.5 px-3 sm:px-5 shadow-sm border border-slate-800 flex items-center justify-between text-[11px] gap-2">
-            <div className="flex items-center gap-2 mx-auto sm:mx-0 truncate">
-              <span className="inline-flex items-center justify-center p-0.5 rounded-full bg-amber-400/20 text-amber-300">
-                <Sparkles className="w-3 h-3 animate-pulse" />
+          <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 text-white rounded-full py-1.5 px-3 sm:px-5 shadow-sm border border-slate-800 flex items-center justify-between text-[11px] gap-2 overflow-hidden">
+            
+            {/* Announcement Message Container */}
+            <div className={`flex items-center gap-2 mx-auto sm:mx-0 overflow-hidden ${announcement.slider ? 'w-full flex-1' : 'truncate'}`}>
+              <span className={`inline-flex items-center justify-center p-0.5 rounded-full bg-amber-400/20 text-amber-300 shrink-0 ${announcement.blinking ? 'animate-blink' : ''}`}>
+                <Sparkles className="w-3 h-3" />
               </span>
-              <span className="font-semibold text-slate-100 truncate">{announcement.text}</span>
+
+              {announcement.slider ? (
+                <div className="overflow-hidden w-full relative flex items-center">
+                  <div className={`animate-marquee whitespace-nowrap font-semibold text-slate-100 ${announcement.blinking ? 'animate-blink' : ''}`}>
+                    <span className="mr-8">{announcement.text}</span>
+                    <span className="mr-8 text-amber-400 font-bold">✦</span>
+                    <span className="mr-8">{announcement.text}</span>
+                    <span className="mr-8 text-amber-400 font-bold">✦</span>
+                    <span className="mr-8">{announcement.text}</span>
+                  </div>
+                </div>
+              ) : (
+                <span className={`font-semibold text-slate-100 truncate ${announcement.blinking ? 'animate-blink' : ''}`}>
+                  {announcement.text}
+                </span>
+              )}
             </div>
 
-            <div className="hidden lg:flex items-center gap-3 shrink-0 text-[10px] font-bold text-slate-300">
+            <div className="hidden lg:flex items-center gap-3 shrink-0 text-[10px] font-bold text-slate-300 pl-3 border-l border-slate-800/80">
               <span className="flex items-center gap-1 text-emerald-400">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
                 <span>OPEN NOW: Mon–Sat 10AM–9:30PM</span>
