@@ -150,21 +150,23 @@ export default function HomePage() {
                     {product.condition || 'Grade A'}
                   </span>
 
-                  {/* Stock Status Badge */}
-                  <span className={`absolute top-2 right-2 px-1.5 py-0.5 sm:px-2 rounded sm:rounded-md text-[9px] sm:text-[10px] font-bold ${
-                    product.units > 0 
-                      ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' 
-                      : 'bg-rose-100 text-rose-800 border border-rose-300'
-                  }`}>
-                    {product.units > 0 ? `${product.units} In Stock` : 'Out of Stock'}
-                  </span>
+                  {/* Bottom Strip: Discount Tag & Stock Status right next to it */}
+                  <div className="absolute bottom-2 left-2 flex items-center gap-1.5 max-w-[calc(100%-16px)]">
+                    {discountPercent > 0 && (
+                      <span className="px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-extrabold bg-amber-500 text-slate-950 shadow-xs shrink-0">
+                        {discountPercent}% OFF
+                      </span>
+                    )}
 
-                  {/* Discount Tag */}
-                  {discountPercent > 0 && (
-                    <span className="absolute bottom-2 left-2 px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-extrabold bg-amber-500 text-slate-950 shadow-xs">
-                      {discountPercent}% OFF
+                    {/* Stock Status Badge (at the right side of % OFF) */}
+                    <span className={`px-1.5 py-0.5 rounded sm:rounded-md text-[9px] sm:text-[10px] font-bold shadow-xs shrink-0 ${
+                      product.units > 0 
+                        ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' 
+                        : 'bg-rose-100 text-rose-800 border border-rose-300'
+                    }`}>
+                      {product.units > 0 ? `${product.units} In Stock` : 'Out of Stock'}
                     </span>
-                  )}
+                  </div>
                 </div>
 
                 {/* Uniform Product Details */}
