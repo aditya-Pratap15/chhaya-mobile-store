@@ -226,7 +226,7 @@ export default function AdminDashboardPage() {
               </div>
             </label>
 
-            {/* Option 2: Blinking Attention Alert */}
+            {/* Option 2: Blinking Alert Box */}
             <label className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-start gap-3 select-none ${
               announcementBlinking 
                 ? 'bg-amber-50/70 border-amber-300 shadow-xs' 
@@ -241,9 +241,9 @@ export default function AdminDashboardPage() {
               <div className="space-y-0.5">
                 <span className="flex items-center gap-1 text-xs font-bold text-slate-900">
                   <Zap className="w-3.5 h-3.5 text-amber-600 fill-amber-500" />
-                  <span>Blinking Alert Effect</span>
+                  <span>Blinking Alert Box</span>
                 </span>
-                <p className="text-[11px] text-slate-500 leading-tight">Flash &amp; pulse text to draw instant customer attention</p>
+                <p className="text-[11px] text-slate-500 leading-tight">Flash &amp; pulse the notification box while keeping message text crisp and readable</p>
               </div>
             </label>
 
@@ -264,7 +264,7 @@ export default function AdminDashboardPage() {
                   <SlidersHorizontal className="w-3.5 h-3.5 text-indigo-600" />
                   <span>Moving Text Slider</span>
                 </span>
-                <p className="text-[11px] text-slate-500 leading-tight">Smooth scrolling ticker sliding across the bar</p>
+                <p className="text-[11px] text-slate-500 leading-tight">Smooth scrolling ticker sliding continuously across the bar</p>
               </div>
             </label>
           </div>
@@ -285,24 +285,38 @@ export default function AdminDashboardPage() {
               </span>
             </div>
 
-            <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 text-white rounded-full py-1.5 px-4 border border-slate-800 flex items-center justify-between text-[11px] gap-2 overflow-hidden shadow-inner">
+            <div className={`rounded-full py-1.5 px-4 flex items-center justify-between text-[11px] gap-2 overflow-hidden shadow-inner transition-all duration-300 ${
+              announcementBlinking 
+                ? 'animate-box-blink border' 
+                : 'bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 text-white border border-slate-800'
+            }`}>
               <div className={`flex items-center gap-2 overflow-hidden ${announcementSlider ? 'w-full flex-1' : 'truncate'}`}>
-                <span className={`inline-flex items-center justify-center p-0.5 rounded-full bg-amber-400/20 text-amber-300 shrink-0 ${announcementBlinking ? 'animate-blink' : ''}`}>
+                <span className="inline-flex items-center justify-center p-0.5 rounded-full bg-amber-400/20 text-amber-300 shrink-0">
                   <Sparkles className="w-3 h-3" />
                 </span>
 
                 {announcementSlider ? (
                   <div className="overflow-hidden w-full relative flex items-center">
-                    <div className={`animate-marquee whitespace-nowrap font-semibold text-slate-100 ${announcementBlinking ? 'animate-blink' : ''}`}>
-                      <span className="mr-8">{announcementText || 'Your announcement message...'}</span>
-                      <span className="mr-8 text-amber-400 font-bold">✦</span>
-                      <span className="mr-8">{announcementText || 'Your announcement message...'}</span>
-                      <span className="mr-8 text-amber-400 font-bold">✦</span>
-                      <span className="mr-8">{announcementText || 'Your announcement message...'}</span>
+                    <div 
+                      className="animate-marquee whitespace-nowrap"
+                      style={{ animation: 'marqueeSlider 18s linear infinite', width: 'max-content', display: 'flex' }}
+                    >
+                      <div className="flex items-center shrink-0 pr-8">
+                        <span className="font-semibold text-slate-100">{announcementText || 'Your announcement message...'}</span>
+                        <span className="mx-6 text-amber-400 font-bold">✦</span>
+                        <span className="font-semibold text-slate-100">{announcementText || 'Your announcement message...'}</span>
+                        <span className="mx-6 text-amber-400 font-bold">✦</span>
+                      </div>
+                      <div className="flex items-center shrink-0 pr-8" aria-hidden="true">
+                        <span className="font-semibold text-slate-100">{announcementText || 'Your announcement message...'}</span>
+                        <span className="mx-6 text-amber-400 font-bold">✦</span>
+                        <span className="font-semibold text-slate-100">{announcementText || 'Your announcement message...'}</span>
+                        <span className="mx-6 text-amber-400 font-bold">✦</span>
+                      </div>
                     </div>
                   </div>
                 ) : (
-                  <span className={`font-semibold text-slate-100 truncate ${announcementBlinking ? 'animate-blink' : ''}`}>
+                  <span className="font-semibold text-slate-100 truncate">
                     {announcementText || 'Your announcement message...'}
                   </span>
                 )}

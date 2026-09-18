@@ -47,6 +47,10 @@ export const ChhayaDB = {
       s.owner.avatar = '';
       safeSet(STORAGE_KEYS.SETTINGS, s);
     }
+    if (s?.announcement) {
+      if (s.announcement.blinking === undefined) s.announcement.blinking = true;
+      if (s.announcement.slider === undefined) s.announcement.slider = true;
+    }
     return s;
   },
   saveSettings(settings) {

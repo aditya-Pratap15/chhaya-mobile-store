@@ -39,10 +39,13 @@ export default function Navbar() {
     setMobileMenuOpen(false);
   }, [location.pathname]);
 
-  const announcement = settings?.announcement || {
-    text: '🔥 Festival Special: Free 9D Tempered Glass with any Screen Replacement! Walk-ins welcome.',
-    visible: true,
-    tone: 'blue'
+  const rawAnnouncement = settings?.announcement || {};
+  const announcement = {
+    text: rawAnnouncement.text || '🔥 Festival Special: Free 9D Tempered Glass with any Screen Replacement! Walk-ins welcome.',
+    visible: rawAnnouncement.visible !== false,
+    tone: rawAnnouncement.tone || 'blue',
+    blinking: rawAnnouncement.blinking !== false,
+    slider: rawAnnouncement.slider !== false
   };
 
   const navLinks = [
@@ -63,26 +66,40 @@ export default function Navbar() {
       {/* ─── Ultra-Slim Floating Announcement Capsule ─── */}
       {announcement.visible && (
         <div className="pt-2 px-3 sm:px-6 max-w-7xl mx-auto w-full">
-          <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 text-white rounded-full py-1.5 px-3 sm:px-5 shadow-sm border border-slate-800 flex items-center justify-between text-[11px] gap-2 overflow-hidden">
+          <div className={`rounded-full py-1.5 px-3 sm:px-5 flex items-center justify-between text-[11px] gap-2 overflow-hidden transition-all duration-300 ${
+            announcement.blinking 
+              ? 'animate-box-blink border' 
+              : 'bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 text-white border border-slate-800 shadow-sm'
+          }`}>
             
             {/* Announcement Message Container */}
             <div className={`flex items-center gap-2 mx-auto sm:mx-0 overflow-hidden ${announcement.slider ? 'w-full flex-1' : 'truncate'}`}>
-              <span className={`inline-flex items-center justify-center p-0.5 rounded-full bg-amber-400/20 text-amber-300 shrink-0 ${announcement.blinking ? 'animate-blink' : ''}`}>
+              <span className="inline-flex items-center justify-center p-0.5 rounded-full bg-amber-400/20 text-amber-300 shrink-0">
                 <Sparkles className="w-3 h-3" />
               </span>
 
               {announcement.slider ? (
                 <div className="overflow-hidden w-full relative flex items-center">
-                  <div className={`animate-marquee whitespace-nowrap font-semibold text-slate-100 ${announcement.blinking ? 'animate-blink' : ''}`}>
-                    <span className="mr-8">{announcement.text}</span>
-                    <span className="mr-8 text-amber-400 font-bold">✦</span>
-                    <span className="mr-8">{announcement.text}</span>
-                    <span className="mr-8 text-amber-400 font-bold">✦</span>
-                    <span className="mr-8">{announcement.text}</span>
+                  <div 
+                    className="animate-marquee whitespace-nowrap"
+                    style={{ animation: 'marqueeSlider 18s linear infinite', width: 'max-content', display: 'flex' }}
+                  >
+                    <div className="flex items-center shrink-0 pr-8">
+                      <span className="font-semibold text-slate-100">{announcement.text}</span>
+                      <span className="mx-6 text-amber-400 font-bold">✦</span>
+                      <span className="font-semibold text-slate-100">{announcement.text}</span>
+                      <span className="mx-6 text-amber-400 font-bold">✦</span>
+                    </div>
+                    <div className="flex items-center shrink-0 pr-8" aria-hidden="true">
+                      <span className="font-semibold text-slate-100">{announcement.text}</span>
+                      <span className="mx-6 text-amber-400 font-bold">✦</span>
+                      <span className="font-semibold text-slate-100">{announcement.text}</span>
+                      <span className="mx-6 text-amber-400 font-bold">✦</span>
+                    </div>
                   </div>
                 </div>
               ) : (
-                <span className={`font-semibold text-slate-100 truncate ${announcement.blinking ? 'animate-blink' : ''}`}>
+                <span className="font-semibold text-slate-100 truncate">
                   {announcement.text}
                 </span>
               )}
@@ -278,52 +295,6 @@ export default function Navbar() {
           </div>
         )}
       </header>
-
-      {/* ─── Floating Island Bottom Navigation Bar for Mobile Phones ─── */}
-      <div className="sm:hidden fixed bottom-3 left-3 right-3 z-40">
-        <div className="bg-white/92 backdrop-blur-2xl border border-slate-200/90 shadow-2xl rounded-full px-3 py-1.5 flex items-center justify-around">
-          <NavLink 
-            to="/" 
-            className={({ isActive }) => `flex flex-col items-center py-1 px-2 rounded-full transition-all ${isActive ? 'text-blue-700 font-black' : 'text-slate-500'}`}
-          >
-            <Smartphone className="w-4 h-4" />
-            <span className="text-[9px] font-bold">Home</span>
-          </NavLink>
-
-          <NavLink 
-            to="/products" 
-            className={({ isActive }) => `flex flex-col items-center py-1 px-2 rounded-full transition-all ${isActive ? 'text-blue-700 font-black' : 'text-slate-500'}`}
-          >
-            <ShoppingBag className="w-4 h-4" />
-            <span className="text-[9px] font-bold">Gadgets</span>
-          </NavLink>
-
-          {/* Elevated Center Action */}
-          <button
-            onClick={() => setActiveBookingModal({})}
-            className="flex flex-col items-center justify-center w-11 h-11 -mt-4 rounded-full bg-gradient-to-tr from-blue-700 via-indigo-600 to-cyan-500 text-white shadow-xl shadow-blue-700/40 border-2 border-white active:scale-95 transition-transform cursor-pointer"
-            title="Book Repair"
-          >
-            <Wrench className="w-4 h-4" />
-          </button>
-
-          <NavLink 
-            to="/repairs" 
-            className={({ isActive }) => `flex flex-col items-center py-1 px-2 rounded-full transition-all ${isActive ? 'text-blue-700 font-black' : 'text-slate-500'}`}
-          >
-            <Wrench className="w-4 h-4" />
-            <span className="text-[9px] font-bold">Repairs</span>
-          </NavLink>
-
-          <NavLink 
-            to="/location" 
-            className={({ isActive }) => `flex flex-col items-center py-1 px-2 rounded-full transition-all ${isActive ? 'text-blue-700 font-black' : 'text-slate-500'}`}
-          >
-            <MapPin className="w-4 h-4" />
-            <span className="text-[9px] font-bold">Store</span>
-          </NavLink>
-        </div>
-      </div>
     </>
   );
 }
