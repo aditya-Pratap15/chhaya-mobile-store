@@ -21,6 +21,7 @@ import {
   Star,
   Gift
 } from 'lucide-react';
+import ChhayaLogo from './ChhayaLogo';
 
 export default function AdminLayout() {
   const { isAdmin, adminSession, logout, bookings, settings } = useApp();
@@ -92,13 +93,9 @@ export default function AdminLayout() {
           </button>
 
           <Link to="/admin/dashboard" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-700 to-indigo-600 p-0.5 shadow-sm">
-              <div className="w-full h-full bg-white rounded-[10px] flex items-center justify-center p-1">
-                <img 
-                  src="https://lh3.googleusercontent.com/aida/AEtjO1UpXC3bWtjZK90kB9gRDgBX5b0lU0MNEJtAY8UfnAKgBSgellOngJqV7o_W00IhbOLv65ldU_13LbxqXcGcfKwpPaFemF82eAfi92NA9TCB-D9j4UlHAc11DjucIOaNYRaJZ77kRCmX8vQhYOTDoEHIPTmzyHp4BOG00eGghrpQq4dcRvUd_LFXRRhxLTDn5mnTO1wDlQdvjpiBDUjm1n9PeXHowQKV595Qm5qbpZ4aD4BkAVgypapv-p8" 
-                  alt="Chhaya Mobiles Logo" 
-                  className="w-full h-full object-contain"
-                />
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-700 to-indigo-600 p-0.5 shadow-sm shrink-0">
+              <div className="w-full h-full bg-white rounded-[10px] flex items-center justify-center p-0.5 overflow-hidden">
+                <ChhayaLogo className="w-full h-full" />
               </div>
             </div>
             <div>

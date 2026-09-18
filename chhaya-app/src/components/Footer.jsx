@@ -13,6 +13,7 @@ import {
   Sparkles,
   Lock
 } from 'lucide-react';
+import ChhayaLogo from './ChhayaLogo';
 
 export default function Footer() {
   const { settings } = useApp();
@@ -71,13 +72,9 @@ export default function Footer() {
           {/* Brand Info */}
           <div className="md:col-span-4 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 p-0.5">
-                <div className="w-full h-full bg-white rounded-[10px] flex items-center justify-center p-1">
-                  <img 
-                    src="https://lh3.googleusercontent.com/aida/AEtjO1UpXC3bWtjZK90kB9gRDgBX5b0lU0MNEJtAY8UfnAKgBSgellOngJqV7o_W00IhbOLv65ldU_13LbxqXcGcfKwpPaFemF82eAfi92NA9TCB-D9j4UlHAc11DjucIOaNYRaJZ77kRCmX8vQhYOTDoEHIPTmzyHp4BOG00eGghrpQq4dcRvUd_LFXRRhxLTDn5mnTO1wDlQdvjpiBDUjm1n9PeXHowQKV595Qm5qbpZ4aD4BkAVgypapv-p8" 
-                    alt="Logo" 
-                    className="w-full h-full object-contain"
-                  />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 p-0.5 shrink-0">
+                <div className="w-full h-full bg-white rounded-[10px] flex items-center justify-center p-0.5 overflow-hidden">
+                  <ChhayaLogo className="w-full h-full" />
                 </div>
               </div>
               <div>

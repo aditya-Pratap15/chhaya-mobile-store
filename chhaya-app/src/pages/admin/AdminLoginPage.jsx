@@ -16,9 +16,9 @@ import {
   RotateCcw,
   Sparkles,
   ArrowRight,
-  HelpCircle
 } from 'lucide-react';
 import { ChhayaDB } from '../../services/db';
+import ChhayaLogo from '../../components/ChhayaLogo';
 
 export default function AdminLoginPage() {
   const { login, isAdmin, showToast } = useApp();
@@ -159,12 +159,8 @@ export default function AdminLoginPage() {
         {/* Top Logo & Title */}
         <div className="text-center space-y-3">
           <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-600 p-0.5 shadow-md shadow-blue-600/20 mx-auto flex items-center justify-center">
-            <div className="w-full h-full bg-white rounded-[14px] flex items-center justify-center p-2">
-              <img 
-                src="https://lh3.googleusercontent.com/aida/AEtjO1UpXC3bWtjZK90kB9gRDgBX5b0lU0MNEJtAY8UfnAKgBSgellOngJqV7o_W00IhbOLv65ldU_13LbxqXcGcfKwpPaFemF82eAfi92NA9TCB-D9j4UlHAc11DjucIOaNYRaJZ77kRCmX8vQhYOTDoEHIPTmzyHp4BOG00eGghrpQq4dcRvUd_LFXRRhxLTDn5mnTO1wDlQdvjpiBDUjm1n9PeXHowQKV595Qm5qbpZ4aD4BkAVgypapv-p8" 
-                alt="Logo" 
-                className="w-full h-full object-contain"
-              />
+            <div className="w-full h-full bg-white rounded-[14px] flex items-center justify-center p-1 overflow-hidden">
+              <ChhayaLogo className="w-full h-full" />
             </div>
           </div>
 
