@@ -61,14 +61,28 @@ export default function Navbar() {
     }
   };
 
-  // Flipkart style horizontal category strip
+  // Flipkart style horizontal category strip dynamically synchronized with admin category settings
+  const adminCategories = settings?.productCategories && Array.isArray(settings.productCategories) && settings.productCategories.length > 0
+    ? settings.productCategories
+    : ['Pre-Owned Phones', 'Screen Protection', 'Batteries & Power', 'Cases & Covers', 'Audio & Cables'];
+
+  const categoryColorMap = {
+    'Pre-Owned Phones': { icon: Sparkles, color: 'bg-amber-50 text-amber-600' },
+    'Screen Protection': { icon: Shield, color: 'bg-emerald-50 text-emerald-600' },
+    'Batteries & Power': { icon: BatteryCharging, color: 'bg-cyan-50 text-cyan-600' },
+    'Cases & Covers': { icon: ShieldCheck, color: 'bg-indigo-50 text-indigo-600' },
+    'Audio & Cables': { icon: Headphones, color: 'bg-rose-50 text-rose-600' },
+  };
+
   const flipkartCategories = [
     { label: 'All Gadgets', icon: Smartphone, to: '/products', color: 'bg-blue-50 text-blue-600' },
-    { label: 'Pre-Owned Phones', icon: Sparkles, to: '/products?category=Pre-Owned+Phones', color: 'bg-amber-50 text-amber-600' },
+    ...adminCategories.map(cat => ({
+      label: cat,
+      icon: categoryColorMap[cat]?.icon || Tag,
+      to: `/products?category=${encodeURIComponent(cat)}`,
+      color: categoryColorMap[cat]?.color || 'bg-blue-50 text-blue-700'
+    })),
     { label: 'Hardware Lab', icon: Wrench, to: '/repairs', color: 'bg-indigo-50 text-indigo-600' },
-    { label: 'Audio & Gadgets', icon: Headphones, to: '/products?category=Audio+%26+Cables', color: 'bg-rose-50 text-rose-600' },
-    { label: 'Screen Guards', icon: Shield, to: '/products?category=Screen+Protection', color: 'bg-emerald-50 text-emerald-600' },
-    { label: 'Chargers & Power', icon: BatteryCharging, to: '/products?category=Batteries+%26+Power', color: 'bg-cyan-50 text-cyan-600' },
     { label: 'Deals of the Day', icon: Flame, to: '/products?deal=true', color: 'bg-orange-50 text-orange-600' },
     { label: 'Spin & Win', icon: Gift, isAction: 'spin', color: 'bg-purple-50 text-purple-600' },
   ];
@@ -80,7 +94,7 @@ export default function Navbar() {
       
       {/* ─── 1. TOP BROADCAST ANNOUNCEMENT BAR (With Marquee & Blinking Options) ─── */}
       {announcement.visible && (
-        <div className="bg-slate-950 text-white text-[11px] py-1 px-3 sm:px-6 overflow-hidden border-b border-slate-800">
+        <div className={`bg-slate-950 text-white text-[11px] py-1 px-3 sm:px-6 overflow-hidden border-b border-slate-800 ${announcement.blinking ? 'animate-pulse ring-1 ring-amber-400' : ''}`}>
           <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
             
             {/* Announcement Message Container */}
